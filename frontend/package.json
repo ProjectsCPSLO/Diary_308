@@ -26,13 +26,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "lint": "npx eslint . && npx prettier --check .",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
-    "dev":"react-scripts start",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "eject": "react-scripts eject"
+    "dev": "react-scripts start"
   },
   "eslintConfig": {
     "extends": [
