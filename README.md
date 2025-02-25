@@ -18,3 +18,11 @@ This project uses **Prettier** and **ESLint** to enforce code style and best pra
 3. Install dependencies:
    ```bash
    npm install
+   
+To run:
+1. cd into backend
+2. do: npm run dev
+3. cd into frontend
+4. do: npm start
+5. Create a new account on the website
+6. You're In!
