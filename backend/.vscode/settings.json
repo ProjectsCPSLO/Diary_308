@@ -1,11 +1,11 @@
 {
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#171717",
-        "activityBar.foreground": "#0066ff"
-    },
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    },
-    "eslint.validate": ["javascript", "javascriptreact", "json"]
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#171717",
+    "activityBar.foreground": "#0066ff"
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript", "javascriptreact", "json"]
 }

@@ -4,103 +4,101 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
 describe('User Model', () => {
-    beforeAll(async () => {
-        // Connect to the database
-        await mongoose.connect(process.env.MONGO_URI, {
-            //useNewUrlParser: true,
-            //useUnifiedTopology: true,
-        });
+  beforeAll(async () => {
+    // Connect to the database
+    await mongoose.connect(process.env.MONGO_URI, {
+      //useNewUrlParser: true,
+      //useUnifiedTopology: true,
+    });
+  });
+
+  afterAll(async () => {
+    // Disconnect from the database
+    await mongoose.connection.close();
+  });
+
+  beforeEach(async () => {
+    // Clear the User collection before each test
+    await User.deleteMany({});
+  });
+
+  describe('User.signup static method', () => {
+    it('should create a new user', async () => {
+      const user = await User.signup('test@test.com', 'Test123!');
+      expect(user.email).toBe('test@test.com');
+      expect(user.password).not.toBe('Test123!'); // Password should be hashed
     });
 
-    afterAll(async () => {
-        // Disconnect from the database
-        await mongoose.connection.close();
+    it('should not create user with invalid email', async () => {
+      await expect(User.signup('invalid-email', 'Test123!')).rejects.toThrow(
+        'invalid email'
+      );
     });
+  });
 
+  describe('User.login static method', () => {
     beforeEach(async () => {
-        // Clear the User collection before each test
-        await User.deleteMany({});
+      // Create a user before each login test
+      await User.signup('test@test.com', 'Test123!');
     });
 
-    describe('User.signup static method', () => {
-        it('should create a new user', async () => {
-            const user = await User.signup('test@test.com', 'Test123!');
-            expect(user.email).toBe('test@test.com');
-            expect(user.password).not.toBe('Test123!'); // Password should be hashed
-        });
-
-        it('should not create user with invalid email', async () => {
-            await expect(User.signup('invalid-email', 'Test123!'))
-                .rejects
-                .toThrow('invalid email');
-        });
+    it('should login valid user', async () => {
+      const user = await User.login('test@test.com', 'Test123!');
+      expect(user.email).toBe('test@test.com');
     });
 
-    describe('User.login static method', () => {
-        beforeEach(async () => {
-            // Create a user before each login test
-            await User.signup('test@test.com', 'Test123!');
-        });
+    it('should not login with wrong password', async () => {
+      await expect(
+        User.login('test@test.com', 'WrongPass123!')
+      ).rejects.toThrow('incorrect password');
+    });
+  });
 
-        it('should login valid user', async () => {
-            const user = await User.login('test@test.com', 'Test123!');
-            expect(user.email).toBe('test@test.com');
-        });
-
-        it('should not login with wrong password', async () => {
-            await expect(User.login('test@test.com', 'WrongPass123!'))
-                .rejects
-                .toThrow('incorrect password');
-        });
+  describe('User.signup static method', () => {
+    it('should not create user without email', async () => {
+      await expect(User.signup('', 'Test123!')).rejects.toThrow(
+        'all fields required'
+      );
     });
 
-    describe('User.signup static method', () => {
-        it('should not create user without email', async () => {
-            await expect(User.signup('', 'Test123!'))
-                .rejects
-                .toThrow('all fields required');
-        });
-    
-        it('should not create user without password', async () => {
-            await expect(User.signup('test@test.com', ''))
-                .rejects
-                .toThrow('all fields required');
-        });
-    
-        it('should not create user with weak password', async () => {
-            await expect(User.signup('test@test.com', '12345'))
-                .rejects
-                .toThrow('password not strong');
-        });
-    
-        it('should not create user with an already registered email', async () => {
-            await User.signup('test@test.com', 'Test123!');
-            await expect(User.signup('test@test.com', 'Test123!'))
-                .rejects
-                .toThrow('email already registered');
-        });
+    it('should not create user without password', async () => {
+      await expect(User.signup('test@test.com', '')).rejects.toThrow(
+        'all fields required'
+      );
     });
-    
-    describe('User.login static method', () => {
-        it('should not login without email', async () => {
-            await expect(User.login('', 'Test123!'))
-                .rejects
-                .toThrow('all fields required');
-        });
-    
-        it('should not login without password', async () => {
-            await expect(User.login('test@test.com', ''))
-                .rejects
-                .toThrow('all fields required');
-        });
-    
-        it('should not login with unregistered email', async () => {
-            await expect(User.login('notregistered@test.com', 'Test123!'))
-                .rejects
-                .toThrow('email not registered');
-        });
+
+    it('should not create user with weak password', async () => {
+      await expect(User.signup('test@test.com', '12345')).rejects.toThrow(
+        'password not strong'
+      );
     });
-    
+
+    it('should not create user with an already registered email', async () => {
+      await User.signup('test@test.com', 'Test123!');
+      await expect(User.signup('test@test.com', 'Test123!')).rejects.toThrow(
+        'email already registered'
+      );
+    });
+  });
+
+  describe('User.login static method', () => {
+    it('should not login without email', async () => {
+      await expect(User.login('', 'Test123!')).rejects.toThrow(
+        'all fields required'
+      );
+    });
+
+    it('should not login without password', async () => {
+      await expect(User.login('test@test.com', '')).rejects.toThrow(
+        'all fields required'
+      );
+    });
+
+    it('should not login with unregistered email', async () => {
+      await expect(
+        User.login('notregistered@test.com', 'Test123!')
+      ).rejects.toThrow('email not registered');
+    });
+  });
 });

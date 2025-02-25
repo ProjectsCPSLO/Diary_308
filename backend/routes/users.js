@@ -1,11 +1,11 @@
 import express from 'express';
 import { requireAuth } from '../middleware/auth.js';
 import {
-    signupUser,
-    loginUser,
-    getProfile,
-    getCollaborators,
-    addCollaborator
+  signupUser,
+  loginUser,
+  getProfile,
+  getCollaborators,
+  addCollaborator,
 } from '../controllers/userControllers.js';
 
 const router = express.Router();

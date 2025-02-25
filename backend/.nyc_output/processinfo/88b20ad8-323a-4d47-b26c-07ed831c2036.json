@@ -1,1 +1,16 @@
-{"parent":"ed9c50a9-8d56-4c61-a7f6-53a54eed3ba2","pid":4610,"argv":["/Users/muskasaid/.nvm/versions/node/v20.17.0/bin/node","/Users/muskasaid/diaryapp/backend/node_modules/jest-worker/build/workers/processChild.js"],"execArgv":[],"cwd":"/Users/muskasaid/diaryapp/backend","time":1733803187883,"ppid":4577,"coverageFilename":"/Users/muskasaid/diaryapp/backend/.nyc_output/88b20ad8-323a-4d47-b26c-07ed831c2036.json","externalId":"","uuid":"88b20ad8-323a-4d47-b26c-07ed831c2036","files":[]}
+{
+  "parent": "ed9c50a9-8d56-4c61-a7f6-53a54eed3ba2",
+  "pid": 4610,
+  "argv": [
+    "/Users/muskasaid/.nvm/versions/node/v20.17.0/bin/node",
+    "/Users/muskasaid/diaryapp/backend/node_modules/jest-worker/build/workers/processChild.js"
+  ],
+  "execArgv": [],
+  "cwd": "/Users/muskasaid/diaryapp/backend",
+  "time": 1733803187883,
+  "ppid": 4577,
+  "coverageFilename": "/Users/muskasaid/diaryapp/backend/.nyc_output/88b20ad8-323a-4d47-b26c-07ed831c2036.json",
+  "externalId": "",
+  "uuid": "88b20ad8-323a-4d47-b26c-07ed831c2036",
+  "files": []
+}
