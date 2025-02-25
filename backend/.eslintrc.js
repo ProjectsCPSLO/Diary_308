@@ -2,7 +2,7 @@ module.exports = {
     env: {
       node: true,
       jest: true,
-      es6: true
+      es6: true,
     },
     extends: ['eslint:recommended'],
     parserOptions: {
@@ -17,6 +17,6 @@ module.exports = {
       afterEach: 'readonly',
       beforeAll: 'readonly',
       afterAll: 'readonly',
-      jest: 'readonly'
-    }
+      jest: 'readonly',
+    },
   };
