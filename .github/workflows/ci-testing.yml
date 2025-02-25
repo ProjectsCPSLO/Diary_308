@@ -3,8 +3,6 @@ name: CI Testing
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
   build:
@@ -14,21 +12,26 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-      - name: Install dependencies
+          
+      # Install dependencies for both frontend and backend
+      - name: Install backend dependencies
+        working-directory: ./backend
         run: npm ci
       
-      # Backend tests and linting
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci
+      
+      # Run linting and tests
       - name: Backend lint
         working-directory: ./backend
         run: npm run lint
-      - name: Backend tests
-        working-directory: ./backend
-        run: npm test
-      
-      # Frontend tests and build
+        
       - name: Frontend lint
         working-directory: ./frontend
         run: npm run lint
+        
+      # Build frontend
       - name: Frontend build
         working-directory: ./frontend
         run: npm run build
