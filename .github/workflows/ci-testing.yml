@@ -13,6 +13,10 @@ jobs:
         with:
           node-version: 20
           
+      # Install the missing ESLint package at root level
+      - name: Install eslint packages at root
+        run: npm install --save-dev @eslint/js
+          
       # Install dependencies for both frontend and backend
       - name: Install backend dependencies
         working-directory: ./backend
