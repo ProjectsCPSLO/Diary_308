@@ -1,23 +1,22 @@
 import mongoose from 'mongoose';
 import User from '../../models/User';
 import dotenv from 'dotenv';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+let mongoServer;
 
 dotenv.config();
 
 describe('User Model', () => {
   beforeAll(async () => {
-    // Connect to the database
-    await mongoose.connect(process.env.MONGO_URI, {
-      //useNewUrlParser: true,
-      //useUnifiedTopology: true,
-    });
+    mongoServer = await MongoMemoryServer.create();
+    const uri = mongoServer.getUri();
+    await mongoose.connect(uri);
   });
 
   afterAll(async () => {
-    // Disconnect from the database
     await mongoose.connection.close();
+    await mongoServer.stop();
   });
-
   beforeEach(async () => {
     // Clear the User collection before each test
     await User.deleteMany({});

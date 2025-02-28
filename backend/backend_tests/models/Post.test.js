@@ -1,19 +1,22 @@
 import mongoose from 'mongoose';
 import Post from '../../models/Post';
 import dotenv from 'dotenv';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+let mongoServer;
 
 dotenv.config();
 
 describe('Post Model', () => {
   beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URI, {
-      // useNewUrlParser: true,
-      // useUnifiedTopology: true,
-    });
+    mongoServer = await MongoMemoryServer.create();
+    const uri = mongoServer.getUri();
+    await mongoose.connect(uri);
   });
+  
 
   afterAll(async () => {
     await mongoose.connection.close();
+    await mongoServer.stop();
   });
 
   beforeEach(async () => {
