@@ -12,7 +12,6 @@ import Profile from './pages/Profile';
 
 const App = () => {
   const { user } = useAuthContext();
-  const { theme } = useContext(ThemeContext);
 
   const elements = useRoutes([
     {

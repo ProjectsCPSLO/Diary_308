@@ -78,7 +78,7 @@ const PostHead = ({ post }) => {
     );
 
     if (response.ok) {
-      const json = await response.json();
+      await response.json();
       dispatch({ type: 'DELETE_POST', payload: post._id });
       console.log('Post deleted:', post._id);
     } else {

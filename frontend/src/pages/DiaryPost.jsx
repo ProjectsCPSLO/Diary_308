@@ -91,7 +91,7 @@ const DiaryPost = () => {
     if (user && id) {
       checkPost();
     }
-  }, [id, user]);
+  }, [id, user, checkPost]);
 
   if (isLoading) {
     return (
