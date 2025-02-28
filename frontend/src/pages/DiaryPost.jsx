@@ -29,7 +29,7 @@ const DiaryPost = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:4000/api/posts/${id}/verify`,
+        `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${id}/verify`,
         {
           method: 'POST',
           headers: {
@@ -60,7 +60,7 @@ const DiaryPost = () => {
     if (user && id) {
       const checkPost = async () => {
         try {
-          const response = await fetch(`http://localhost:4000/api/posts/${id}`, {
+          const response = await fetch(`https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${id}`, {
             method: 'GET',
             headers: {
               Authorization: `Bearer ${user.token}`,

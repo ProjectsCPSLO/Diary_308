@@ -37,7 +37,9 @@ const connectDB = async () => {
 
 connectDB()
   .then(() => {
-    app.listen(port, () => console.log(`listening on port ${port}`));
+    app.listen(process.env.PORT || port, () => {
+      console.log("REST API is listening.");
+    });
   })
   .catch((err) => console.log(err));
 

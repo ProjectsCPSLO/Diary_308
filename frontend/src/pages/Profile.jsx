@@ -35,7 +35,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/user/profile', {
+        const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/user/profile', {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -86,7 +86,7 @@ const Profile = () => {
 
     try {
       const response = await fetch(
-        'http://localhost:4000/api/user/add-collaborator',
+        'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/user/add-collaborator',
         {
           method: 'POST',
           headers: {

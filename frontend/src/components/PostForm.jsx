@@ -79,7 +79,7 @@ const PostForm = () => {
 
     console.log('Full post data:', post);
     try {
-      const response = await fetch('http://localhost:4000/api/posts', {
+      const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts', {
         method: 'POST',
         body: JSON.stringify(post),
         headers: {
