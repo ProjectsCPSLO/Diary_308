@@ -60,6 +60,7 @@
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "identity-obj-proxy": "^3.0.0",
+    "mongodb-memory-server": "^10.1.4",
     "prettier": "^3.5.2"
   }
 }

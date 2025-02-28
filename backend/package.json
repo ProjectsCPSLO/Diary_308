@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "lint": "npx eslint" ,
+    "lint": "npx eslint",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles",
     "start": "node server.js",
     "dev": "nodemon server.js"
@@ -33,7 +33,7 @@
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "jest": "^29.7.0",
-    "mongodb-memory-server": "^10.1.2",
+    "mongodb-memory-server": "^10.1.4",
     "nodemon": "^3.1.9",
     "nyc": "^17.1.0",
     "prettier": "^3.5.2",
