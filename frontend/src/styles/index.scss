@@ -1,94 +1,94 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14pt;
-    line-height: 1.33em;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14pt;
+  line-height: 1.33em;
 }
 
 header {
-    display: flex;
-    height: 40px;
-    width: 100%;
-    background-color: slategray;
-    position: fixed;
-    top: 0;
-    padding: 0 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  height: 40px;
+  width: 100%;
+  background-color: slategray;
+  position: fixed;
+  top: 0;
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    nav {
-        ul {
-            display: flex;
-            list-style-type: none;
-        }
-    }    
-    
-    a {
-        text-decoration: none;
-        color: white;
-        margin-left: 15px;
-
-        &:hover {
-            color: yellow;
-        }
+  nav {
+    ul {
+      display: flex;
+      list-style-type: none;
     }
+  }
 
-    span {
-        color: white;
-        flex-grow: 1;
-        text-align: center;
+  a {
+    text-decoration: none;
+    color: white;
+    margin-left: 15px;
+
+    &:hover {
+      color: yellow;
     }
+  }
 
-    & > div {
-        color: white;
+  span {
+    color: white;
+    flex-grow: 1;
+    text-align: center;
+  }
 
-        & > span {
-            margin-right: 15px;
-        }
+  & > div {
+    color: white;
+
+    & > span {
+      margin-right: 15px;
     }
+  }
 
-    button {
-        width: 100px;
-        height: 24px;
-        font-size: 14pt;
-        background-color: rgb(83, 36, 36);
-        color: white;
-        border-radius: 24px;
-        border: none;
-        cursor: pointer;
+  button {
+    width: 100px;
+    height: 24px;
+    font-size: 14pt;
+    background-color: rgb(83, 36, 36);
+    color: white;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
 
-        &:hover {
-            background-color: rgb(117, 49, 49);
-        }
+    &:hover {
+      background-color: rgb(117, 49, 49);
     }
+  }
 }
 
 main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 150px;
-    margin: 70px 0 0 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 150px;
+  margin: 70px 0 0 30px;
 }
 
 h1 {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 p {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .spinner {
-    width: 200px;
-    height: 200px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

@@ -11,25 +11,40 @@ import CalendarPage from './pages/Calendar'; // Import the CalendarPage
 import Profile from './pages/Profile';
 
 const App = () => {
-    const { user } = useAuthContext();
-    const { theme } = useContext(ThemeContext);
+  const { user } = useAuthContext();
+  const { theme } = useContext(ThemeContext);
 
-    const elements = useRoutes([
+  const elements = useRoutes([
+    {
+      path: '/',
+      element: <Layout />, // Wrap with Layout to preserve structure
+      children: [
+        { path: '/', element: user ? <Home /> : <Navigate to="/api/login" /> },
         {
-            path: '/',
-            element: <Layout />, // Wrap with Layout to preserve structure
-            children: [
-                { path: '/', element: user ? <Home /> : <Navigate to="/api/login" /> },
-                { path: '/api/posts/:id', element: user ? <DiaryPost /> : <Navigate to="/api/login" /> },
-                { path: '/api/signup', element: !user ? <Signup /> : <Navigate to="/" /> },
-                { path: '/api/login', element: !user ? <Login /> : <Navigate to="/" /> },
-                { path: '/calendar', element: user ? <CalendarPage /> : <Navigate to="/api/login" /> },
-                { path: '/profile', element: user ? <Profile /> : <Navigate to="/api/login" /> }, 
-            ],
+          path: '/api/posts/:id',
+          element: user ? <DiaryPost /> : <Navigate to="/api/login" />,
         },
-    ]);
+        {
+          path: '/api/signup',
+          element: !user ? <Signup /> : <Navigate to="/" />,
+        },
+        {
+          path: '/api/login',
+          element: !user ? <Login /> : <Navigate to="/" />,
+        },
+        {
+          path: '/calendar',
+          element: user ? <CalendarPage /> : <Navigate to="/api/login" />,
+        },
+        {
+          path: '/profile',
+          element: user ? <Profile /> : <Navigate to="/api/login" />,
+        },
+      ],
+    },
+  ]);
 
-    return elements;
+  return elements;
 };
 
 export default App;

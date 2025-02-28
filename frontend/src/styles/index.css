@@ -1,146 +1,154 @@
 /* Ensure the root and body take up the full height of the viewport */
-html, body, #root {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box; /* Ensure consistent sizing */
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box; /* Ensure consistent sizing */
 }
 
 /* Light theme (default) */
 body {
-    background-color: white;
-    color: black;
-    margin: 0; /* Remove any default margin */
-    padding: 0; /* Remove any default padding */
-    height: 100%; /* Ensure body spans the full height */
-    transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: white;
+  color: black;
+  margin: 0; /* Remove any default margin */
+  padding: 0; /* Remove any default padding */
+  height: 100%; /* Ensure body spans the full height */
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .login-container {
-    background-color: white;
-    /* Default white for light mode */
-    color: black;
-    border-radius: 10px;
-    padding: 20px;
-    width: 400px;
-    /*margin: 100px auto;
+  background-color: white;
+  /* Default white for light mode */
+  color: black;
+  border-radius: 10px;
+  padding: 20px;
+  width: 400px;
+  /*margin: 100px auto;
     /* Center the login box */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Input fields */
 input {
-    display: block;
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: white;
-    /* White in both light and dark modes */
-    color: black;
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  /* White in both light and dark modes */
+  color: black;
 }
 
 body.dark-theme input {
-    background-color: white;
-    /* Keep input background white in dark mode */
-    color: black;
-    /* Ensure text remains black */
+  background-color: white;
+  /* Keep input background white in dark mode */
+  color: black;
+  /* Ensure text remains black */
 }
 
 /* Buttons */
 button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    background-color: #1976d2;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #155a8a;
-    /* Darker blue on hover */
+  background-color: #155a8a;
+  /* Darker blue on hover */
 }
 
 body.dark-theme button:hover {
-    background-color: #0d3d66;
-    /* Darker blue for dark mode hover */
+  background-color: #0d3d66;
+  /* Darker blue for dark mode hover */
 }
 
 /* Dark theme */
 body.dark-theme {
-    background-color: #1c1c1c;
-    /* Dark background for the page */
-    color: white;
-    transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #1c1c1c;
+  /* Dark background for the page */
+  color: white;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .login-container.dark-theme {
-    background-color: #555;
-    /* Light gray background for login box in dark mode */
-    color: white;
-    /* White text for headings and content */
+  background-color: #555;
+  /* Light gray background for login box in dark mode */
+  color: white;
+  /* White text for headings and content */
 }
 
 .login-container h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: black;
-    /* Default color for light mode */
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: black;
+  /* Default color for light mode */
 }
 
 .login-container.dark-theme h1 {
-    color: white;
-    /* White heading for dark mode */
+  color: white;
+  /* White heading for dark mode */
 }
 
 /* Calendar container */
 .calendar-container {
-    display: flex;
-    justify-content: center; /* Center the calendar horizontally */
-    align-items: center; /* Center the calendar vertically */
-    padding: 20px; /* Add some padding around the calendar */
-    width: 100%; /* Ensure the container takes full width */
-    height: 100vh; /* Make the container take the full viewport height */
+  display: flex;
+  justify-content: center; /* Center the calendar horizontally */
+  align-items: center; /* Center the calendar vertically */
+  padding: 20px; /* Add some padding around the calendar */
+  width: 100%; /* Ensure the container takes full width */
+  height: 100vh; /* Make the container take the full viewport height */
 }
 
 /* Calendar itself */
 .react-calendar {
-    width: 90%; /* Make the calendar wider */
-    max-width: 1200px; /* Set a maximum width */
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: white;
-    font-size: 1.2rem; /* Increase font size for better readability */
+  width: 90%; /* Make the calendar wider */
+  max-width: 1200px; /* Set a maximum width */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  font-size: 1.2rem; /* Increase font size for better readability */
 }
 
 /* Calendar tiles (individual dates) */
 .react-calendar__tile {
-    padding: 20px; /* Increase padding for larger tiles */
-    height: 80px; /* Increase tile height */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  padding: 20px; /* Increase padding for larger tiles */
+  height: 80px; /* Increase tile height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Navigation buttons */
 .react-calendar__navigation button {
-    background-color: #1976d2;
-    color: white;
-    border-radius: 4px;
-    font-size: 1.2rem; /* Increase font size for navigation buttons */
-    padding: 10px; /* Add padding to navigation buttons */
+  background-color: #1976d2;
+  color: white;
+  border-radius: 4px;
+  font-size: 1.2rem; /* Increase font size for navigation buttons */
+  padding: 10px; /* Add padding to navigation buttons */
 }
 
 .react-calendar__navigation button:hover {
-    background-color: #115293;
+  background-color: #115293;
 }
