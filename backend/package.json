@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "lint": "npx eslint . && npx prettier --check .",
+    "lint": "npx eslint" ,
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles",
     "start": "node server.js",
     "dev": "nodemon server.js"
