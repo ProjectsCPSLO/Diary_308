@@ -1,11 +1,9 @@
-// Profile.jsx
 import React, { useState, useContext, useEffect } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import {
   Box,
   Container,
-  Paper,
   Typography,
   TextField,
   Button,

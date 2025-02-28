@@ -12,12 +12,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-          
-      # Install the missing ESLint package at root level
+
       - name: Install eslint packages at root
         run: npm install --save-dev @eslint/js
-          
-      # Install dependencies for both frontend and backend
+
       - name: Install backend dependencies
         working-directory: ./backend
         run: npm ci
@@ -25,8 +23,7 @@ jobs:
       - name: Install frontend dependencies
         working-directory: ./frontend
         run: npm ci
-      
-      # Run linting and tests
+
       - name: Backend lint
         working-directory: ./backend
         run: npm run lint
@@ -34,8 +31,7 @@ jobs:
       - name: Frontend lint
         working-directory: ./frontend
         run: npm run lint
-        
-      # Build frontend
+
       - name: Frontend build
         working-directory: ./frontend
         run: npm run build
