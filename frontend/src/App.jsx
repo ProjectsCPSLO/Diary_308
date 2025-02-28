@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useRoutes, Navigate } from 'react-router-dom';
 import { useAuthContext } from './hooks/useAuthContext';
-import { ThemeContext } from './context/ThemeContext';
 import Layout from './pages/Layout';
 import Home from './pages/Home';
 import DiaryPost from './pages/DiaryPost';

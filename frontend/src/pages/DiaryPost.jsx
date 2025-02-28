@@ -89,9 +89,41 @@ const DiaryPost = () => {
   // Initial load
   useEffect(() => {
     if (user && id) {
+      // Define checkPost inside the useEffect
+      const checkPost = async () => {
+        try {
+          const response = await fetch(`http://localhost:4000/api/posts/${id}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          });
+  
+          const json = await response.json();
+  
+          if (!response.ok) {
+            if (json.isPasswordProtected) {
+              setPasswordRequired(true);
+              setPost(null);
+            } else {
+              setError(json.error);
+              setPost(null);
+            }
+          } else {
+            setPost(json);
+            setPasswordRequired(false);
+          }
+        } catch (err) {
+          setError('Failed to load post');
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      // Call checkPost
       checkPost();
     }
-  }, [id, user, checkPost]);
+  }, [id, user]);
 
   if (isLoading) {
     return (
