@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { usePostsContext } from '../hooks/usePostsContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { 
@@ -24,30 +24,7 @@ const SearchBar = ({ onSearchResults }) => {
   const menuOpen = Boolean(anchorEl);
 
   
-  useEffect(() => {
-    const delaySearch = setTimeout(() => {
-      if (searchTerm.trim() !== '') {
-        handleSearch();
-      }
-    }, 500);
-    
-    return () => clearTimeout(delaySearch);
-  }, [searchTerm, searchType]);
-
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleSearchTypeChange = (type) => {
-    setSearchType(type);
-    handleMenuClose();
-  };
-
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     if (!posts || searchTerm.trim() === '') {
       onSearchResults(null); 
       return;
@@ -92,6 +69,30 @@ const SearchBar = ({ onSearchResults }) => {
     }
 
     onSearchResults(results);
+  }, [posts, searchTerm, searchType, onSearchResults]);  
+
+  
+  useEffect(() => {
+    const delaySearch = setTimeout(() => {
+      if (searchTerm.trim() !== '') {
+        handleSearch();
+      }
+    }, 500);
+    
+    return () => clearTimeout(delaySearch);
+  }, [searchTerm, searchType, handleSearch]);  
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSearchTypeChange = (type) => {
+    setSearchType(type);
+    handleMenuClose();
   };
 
   const clearSearch = () => {
