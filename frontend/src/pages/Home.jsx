@@ -3,6 +3,7 @@ import { usePostsContext } from '../hooks/usePostsContext.js';
 import { useAuthContext } from '../hooks/useAuthContext.js';
 import PostHead from '../components/PostHead';
 import PostForm from '../components/PostForm';
+import SearchBar from '../components/SearchBar';
 import {
   Grid,
   Box,
@@ -11,6 +12,7 @@ import {
   Container,
   Chip,
   Button,
+  Paper,
 } from '@mui/material';
 import { ThemeContext } from '../context/ThemeContext';
 import { useState } from 'react';
@@ -21,6 +23,7 @@ const Home = () => {
   const { theme } = useContext(ThemeContext);
   const [selectedTags, setSelectedTags] = useState([]);
   const [isTagFilterActive, setIsTagFilterActive] = useState(false);
+  const [searchResults, setSearchResults] = useState(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -66,11 +69,26 @@ const Home = () => {
     }
   };
 
-  const filteredPosts = posts?.filter((post) => {
-    if (!isTagFilterActive) return true;
-    if (!post.tags) return false;
-    return selectedTags.some((tag) => post.tags.includes(tag));
-  });
+  
+  const getFilteredPosts = () => {
+    
+    const basePostsList = searchResults || posts;
+    
+    
+    if (!isTagFilterActive) return basePostsList;
+    
+    
+    return basePostsList?.filter((post) => {
+      if (!post.tags) return false;
+      return selectedTags.some((tag) => post.tags.includes(tag));
+    });
+  };
+
+  const filteredPosts = getFilteredPosts();
+
+  const handleSearchResults = (results) => {
+    setSearchResults(results);
+  };
 
   if (!posts) {
     return (
@@ -120,7 +138,11 @@ const Home = () => {
             >
               Posts
             </Typography>
+            
+            
+            <SearchBar onSearchResults={handleSearchResults} />
 
+            
             <Box
               sx={{
                 mb: 2,
@@ -174,8 +196,53 @@ const Home = () => {
               </Box>
             </Box>
 
+           
+            {searchResults && (
+              <Box
+                sx={{
+                  mb: 2,
+                  p: 1,
+                  backgroundColor: theme === 'dark' ? '#3a3a3a' : '#f0f0f0',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography variant="body2">
+                  Found {filteredPosts?.length} result{filteredPosts?.length !== 1 ? 's' : ''}
+                </Typography>
+                <Button 
+                  size="small" 
+                  onClick={() => setSearchResults(null)}
+                  variant="text"
+                >
+                  Clear Search
+                </Button>
+              </Box>
+            )}
+
+            
+            {filteredPosts?.length === 0 && (
+              <Paper
+                elevation={2}
+                sx={{
+                  p: 3,
+                  textAlign: 'center',
+                  backgroundColor: theme === 'dark' ? '#424242' : '#fff',
+                  color: theme === 'dark' ? '#fff' : '#000',
+                }}
+              >
+                <Typography variant="h6">No posts found</Typography>
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                  Try adjusting your search or filter criteria
+                </Typography>
+              </Paper>
+            )}
+
+            
             <Grid container spacing={2}>
-              {filteredPosts.map((post) => (
+              {filteredPosts?.map((post) => (
                 <Grid item xs={12} sm={6} key={post._id}>
                   <PostHead post={post} />
                 </Grid>
