@@ -19,6 +19,7 @@ import 'react-quill/dist/quill.snow.css';
 import { ThemeContext } from '../context/ThemeContext';
 import WritingPrompts from './WritingPrompts';
 import TagsInput from './TagsInput';
+import GeotagLocation from './GeotagLocation';
 
 const PostForm = () => {
   const {
@@ -36,6 +37,8 @@ const PostForm = () => {
   const [password, setPassword] = useState('');
   const [currentPrompt, setCurrentPrompt] = useState('');
   const [tags, setTags] = useState([]);
+  // New state for the selected location
+  const [location, setLocation] = useState(null);
 
   const editorModules = {
     toolbar: [
@@ -66,22 +69,18 @@ const PostForm = () => {
   };
 
   const onSubmit = async (data) => {
-    
     const dateParts = data.date.split('-');
     const year = parseInt(dateParts[0], 10);
     const month = parseInt(dateParts[1], 10) - 1; 
     const day = parseInt(dateParts[2], 10);
     
-
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
-  
-
+    
     const localDate = new Date(year, month, day, hours, minutes, seconds);
     
-
     console.log('Form date selected:', data.date);
     console.log('Created post date-time:', localDate.toLocaleString());
     console.log('Tags before submission:', tags);
@@ -93,8 +92,9 @@ const PostForm = () => {
       mood: mood,
       password: data.password ? data.password : null,
       tags: tags,
+      location: location, // Include the selected location
     };
-
+    
     console.log('Full post data:', post);
     try {
       const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts', {
@@ -112,6 +112,7 @@ const PostForm = () => {
         setMood('neutral');
         setCurrentPrompt('');
         setTags([]);
+        setLocation(null); // Reset location after submission
         dispatch({ type: 'CREATE_POST', payload: json });
       } else {
         setError('submit', { message: json.error || 'An error occurred.' });
@@ -164,9 +165,9 @@ const PostForm = () => {
           <Typography variant="h5" align="center" gutterBottom>
             Create a Post
           </Typography>
-
+  
           <WritingPrompts onSelectPrompt={handlePromptSelect} />
-
+  
           {currentPrompt && (
             <Alert
               severity="info"
@@ -179,7 +180,7 @@ const PostForm = () => {
               Prompt: {currentPrompt}
             </Alert>
           )}
-
+  
           <TextField
             label="Title"
             variant="outlined"
@@ -196,7 +197,7 @@ const PostForm = () => {
               style: { color: theme === 'dark' ? '#90caf9' : '#000' },
             }}
           />
-
+  
           <TextField
             label="Date"
             type="date"
@@ -216,7 +217,7 @@ const PostForm = () => {
               shrink: true,
             }}
           />
-
+  
           <Box sx={{ minHeight: '200px' }}>
             <ReactQuill
               theme="snow"
@@ -231,7 +232,7 @@ const PostForm = () => {
               }}
             />
           </Box>
-
+  
           <FormControl fullWidth>
             <InputLabel>Mood</InputLabel>
             <Select
@@ -246,7 +247,7 @@ const PostForm = () => {
               <MenuItem value="Neutral">Neutral</MenuItem>
             </Select>
           </FormControl>
-
+  
           <TextField
             label="Password (Optional)"
             type="password"
@@ -257,15 +258,21 @@ const PostForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             helperText="Add a password to protect your post (optional)"
           />
-
+  
           <TagsInput tags={tags} setTags={setTags} theme={theme} />
-
+  
+          {/* Geotag component for selecting location */}
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="subtitle1">Select Location</Typography>
+            <GeotagLocation onLocationSelect={setLocation} />
+          </Box>
+  
           {errors.submit && (
             <Typography variant="body2" color="error" align="center">
               {errors.submit.message}
             </Typography>
           )}
-
+  
           <Button
             type="submit"
             variant="contained"
