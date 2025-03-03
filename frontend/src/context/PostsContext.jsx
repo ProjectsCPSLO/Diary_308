@@ -25,6 +25,16 @@ export const postsReducer = (state, action) => {
           post._id === action.payload._id ? action.payload : post
         ),
       };
+    case 'SEARCH_POSTS':
+      return {
+        ...state,
+        searchResults: action.payload,
+      };
+    case 'CLEAR_SEARCH':
+      return {
+        ...state,
+        searchResults: null,
+      };
     default:
       return state;
   }
@@ -33,19 +43,31 @@ export const postsReducer = (state, action) => {
 export const PostsContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(postsReducer, {
     posts: null,
+    searchResults: null,
   });
 
-  // Fetch posts from the backend
+  
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch('/api/posts', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`, // Add auth token if needed
-        },
-      });
-      const data = await response.json();
-      dispatch({ type: 'SET_POSTS', payload: data });
+      try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) return;
+
+        const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts', {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          dispatch({ type: 'SET_POSTS', payload: data });
+        }
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
     };
+    
     fetchPosts();
   }, []);
 

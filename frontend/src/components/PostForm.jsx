@@ -66,8 +66,26 @@ const PostForm = () => {
   };
 
   const onSubmit = async (data) => {
-    const localDate = new Date(data.date + 'T08:00:00');
+    
+    const dateParts = data.date.split('-');
+    const year = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10) - 1; 
+    const day = parseInt(dateParts[2], 10);
+    
+
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+  
+
+    const localDate = new Date(year, month, day, hours, minutes, seconds);
+    
+
+    console.log('Form date selected:', data.date);
+    console.log('Created post date-time:', localDate.toLocaleString());
     console.log('Tags before submission:', tags);
+    
     const post = {
       date: localDate.toISOString(),
       title: data.title,
@@ -93,6 +111,7 @@ const PostForm = () => {
         setContent('');
         setMood('neutral');
         setCurrentPrompt('');
+        setTags([]);
         dispatch({ type: 'CREATE_POST', payload: json });
       } else {
         setError('submit', { message: json.error || 'An error occurred.' });
@@ -183,6 +202,7 @@ const PostForm = () => {
             type="date"
             variant="outlined"
             fullWidth
+            defaultValue={new Date().toISOString().split('T')[0]} 
             {...register('date', { required: 'Date is required' })}
             error={!!errors.date}
             helperText={errors.date?.message}

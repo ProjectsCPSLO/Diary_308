@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { format } from 'date-fns';
 import { usePostsContext } from '../hooks/usePostsContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { ThemeContext } from '../context/ThemeContext';
@@ -42,6 +41,30 @@ const PostHead = ({ post }) => {
     severity: 'success',
   });
   const [sharedWith, setSharedWith] = useState(post.sharedWith || []);
+
+  const formatDateTime = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      
+
+      if (isNaN(date.getTime())) {
+        console.error("Invalid date:", dateString);
+        return "Invalid date";
+      }
+      
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+      });
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Date error";
+    }
+  };
 
   useEffect(() => {
     const fetchCollaborators = async () => {
@@ -165,6 +188,8 @@ const PostHead = ({ post }) => {
     fontWeight: 'bold',
     fontSize: '1.5rem',
     marginBottom: '0.5rem',
+    width: '100%',
+    textAlign: 'left',
     '&:hover': {
       color: theme === 'dark' ? '#90caf9' : '#1a73e8',
     },
@@ -174,6 +199,8 @@ const PostHead = ({ post }) => {
     color: theme === 'dark' ? '#e0e0e0' : '#757575',
     fontSize: '0.875rem',
     marginBottom: '1rem',
+    textAlign: 'left',
+    width: '100%',
   };
 
   const contentStyle = {
@@ -186,6 +213,8 @@ const PostHead = ({ post }) => {
     textOverflow: 'ellipsis',
     whiteSpace: 'normal',
     flex: 1,
+    textAlign: 'left',
+    width: '100%',
   };
 
   const moodStyle = {
@@ -194,17 +223,15 @@ const PostHead = ({ post }) => {
     display: 'flex',
     alignItems: 'center',
     gap: '4px',
+    width: '100%',
+    justifyContent: 'flex-start',
   };
 
   return (
     <>
       <ListItem sx={postStyle}>
-        <Stack direction="column" spacing={1} sx={{ height: '100%' }}>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
+        <Stack direction="column" spacing={1} sx={{ height: '100%', width: '100%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'flex-start' }}>
             <Typography
               component={Link}
               to={`/api/posts/${post._id}`}
@@ -213,7 +240,7 @@ const PostHead = ({ post }) => {
               {post.title}
             </Typography>
 
-            <Box sx={{ display: 'flex', gap: 1 }}>
+            <Box sx={{ display: 'flex', gap: 1, ml: 2, flexShrink: 0 }}>
               <IconButton
                 onClick={() => setShareDialogOpen(true)}
                 sx={{
@@ -225,8 +252,9 @@ const PostHead = ({ post }) => {
                         : 'rgba(25, 118, 210, 0.1)',
                   },
                 }}
+                size="small"
               >
-                <ShareIcon />
+                <ShareIcon fontSize="small" />
               </IconButton>
 
               <IconButton
@@ -240,8 +268,9 @@ const PostHead = ({ post }) => {
                         : 'rgba(25, 118, 210, 0.1)',
                   },
                 }}
+                size="small"
               >
-                <EditIcon />
+                <EditIcon fontSize="small" />
               </IconButton>
 
               <IconButton
@@ -258,18 +287,19 @@ const PostHead = ({ post }) => {
                         : 'rgba(211, 47, 47, 0.1)',
                   },
                 }}
+                size="small"
               >
-                <DeleteIcon />
+                <DeleteIcon fontSize="small" />
               </IconButton>
             </Box>
-          </Stack>
+          </Box>
 
           <Typography variant="body2" sx={dateStyle}>
-            {format(new Date(post.date), 'MMMM d, y')}
+            {formatDateTime(post.date)}
           </Typography>
 
           <Box sx={moodStyle}>
-            <MoodIcon />
+            <MoodIcon fontSize="small" />
             <span>{post.mood}</span>
           </Box>
 
@@ -286,6 +316,8 @@ const PostHead = ({ post }) => {
                 flexWrap: 'wrap',
                 gap: 0.5,
                 mt: 1,
+                width: '100%',
+                justifyContent: 'flex-start',
               }}
             >
               {post.tags.map((tag, index) => (
@@ -315,7 +347,7 @@ const PostHead = ({ post }) => {
         theme={theme}
       />
 
-      {/* Share Dialog */}
+
       <Dialog
         open={shareDialogOpen}
         onClose={() => {
@@ -410,7 +442,7 @@ const PostHead = ({ post }) => {
         </DialogActions>
       </Dialog>
 
-      {/* Notification Snackbar */}
+
       <Snackbar
         open={notification.open}
         autoHideDuration={6000}
