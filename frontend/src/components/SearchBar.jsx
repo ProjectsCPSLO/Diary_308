@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import { usePostsContext } from '../hooks/usePostsContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { 
@@ -69,18 +69,47 @@ const SearchBar = ({ onSearchResults }) => {
     }
 
     onSearchResults(results);
-  }, [posts, searchTerm, searchType, onSearchResults]);  
+  }, [posts, searchTerm, searchType, onSearchResults]);
 
   
-  useEffect(() => {
-    const delaySearch = setTimeout(() => {
-      if (searchTerm.trim() !== '') {
-        handleSearch();
-      }
-    }, 500);
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
     
-    return () => clearTimeout(delaySearch);
-  }, [searchTerm, searchType, handleSearch]);  
+    
+    if (value.trim() !== '') {
+      
+      setTimeout(() => {
+        
+        if (value === e.target.value) {
+          onSearchResults(
+            posts?.filter(post => {
+              const term = value.toLowerCase().trim();
+              switch(searchType) {
+                case 'title':
+                  return post.title.toLowerCase().includes(term);
+                case 'content':
+                  return post.content.toLowerCase().includes(term);
+                case 'tags':
+                  return post.tags && post.tags.some(tag => tag.toLowerCase().includes(term));
+                case 'date':
+                  return new Date(post.date).toLocaleDateString().includes(term);
+                case 'all':
+                default:
+                  return post.title.toLowerCase().includes(term) || 
+                         post.content.toLowerCase().includes(term) ||
+                         (post.tags && post.tags.some(tag => tag.toLowerCase().includes(term))) ||
+                         new Date(post.date).toLocaleDateString().includes(term);
+              }
+            })
+          );
+        }
+      }, 500);
+    } else {
+      
+      onSearchResults(null);
+    }
+  };
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -93,10 +122,17 @@ const SearchBar = ({ onSearchResults }) => {
   const handleSearchTypeChange = (type) => {
     setSearchType(type);
     handleMenuClose();
+    
+    
+    if (searchTerm.trim() !== '') {
+      handleSearch();
+    }
   };
 
   const clearSearch = () => {
+    
     setSearchTerm('');
+    
     onSearchResults(null);
   };
 
@@ -112,7 +148,7 @@ const SearchBar = ({ onSearchResults }) => {
           fullWidth
           placeholder="Search posts..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleInputChange}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               handleSearch();
