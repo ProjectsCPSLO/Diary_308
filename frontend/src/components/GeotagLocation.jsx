@@ -52,7 +52,7 @@ const GeotagLocation = ({ onLocationSelect, initialPosition = null }) => {
 
       if (results && results.length > 0) {
         // x => longitude, y => latitude
-        const { x, y, label } = results[0];
+        const { x, y } = results[0];
         const newPosition = { lat: y, lng: x };
 
         setPosition(newPosition);
