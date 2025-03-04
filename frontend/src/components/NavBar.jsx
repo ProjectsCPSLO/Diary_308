@@ -107,6 +107,34 @@ const NavBar = () => {
                   </Link>
                 </Typography>
               )}
+
+                {/* New MAP link */}
+  {user && (
+    <Typography
+      variant="h6"
+      component="div"
+      sx={{
+        fontSize: '1rem',
+        marginLeft: '20px',
+      }}
+    >
+      <Link
+        to="/posts-map"
+        style={{
+          color: 'white',
+          textDecoration: 'none',
+        }}
+      >
+        Map
+      </Link>
+    </Typography>
+  )}
+
+
+
+
+
+
             </Box>
 
             

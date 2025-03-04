@@ -152,3 +152,10 @@ body.dark-theme {
 .react-calendar__navigation button:hover {
   background-color: #115293;
 }
+
+/* If you want to match your dark/light theme: */
+body.dark-theme .leaflet-container {
+  background: #1c1c1c !important;
+}
+
+
