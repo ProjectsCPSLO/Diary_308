@@ -127,6 +127,8 @@ const Profile = () => {
 
   const handleRemoveCollaborator = async (collaboratorId) => {
     try {
+      console.log('Removing collaborator with ID:', collaboratorId);
+      
       const response = await fetch(
         'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/user/remove-collaborator',
         {
@@ -138,9 +140,10 @@ const Profile = () => {
           body: JSON.stringify({ collaboratorId }),
         }
       );
-
+  
       const json = await response.json();
-
+      console.log('Response from server:', json);
+  
       if (response.ok) {
         // Update the collaborators list in state
         setCollaborators(collaborators.filter(c => c._id !== collaboratorId));
@@ -150,6 +153,7 @@ const Profile = () => {
           severity: 'success',
         });
       } else {
+        console.error('Error from server:', json.error);
         setNotification({
           open: true,
           message: json.error || 'Failed to remove collaborator',
@@ -160,7 +164,7 @@ const Profile = () => {
       console.error('Error removing collaborator:', error);
       setNotification({
         open: true,
-        message: 'Error removing collaborator',
+        message: `Error removing collaborator: ${error.message}`,
         severity: 'error',
       });
     }

@@ -91,6 +91,9 @@ export const addCollaborator = async (req, res) => {
 // Removes Collaborator 
 export const removeCollaborator = async (req, res) => {
   const { collaboratorId } = req.body;
+  if (!collaboratorId) {
+    return res.status(400).json({ error: 'Collaborator ID is required' });
+  }
 
   try {
     const user = await User.findById(req.user._id);
@@ -98,13 +101,16 @@ export const removeCollaborator = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
+        const collaboratorExists = user.collaborators.some(id => 
+      id.toString() === collaboratorId.toString()
+    );
     
-    if (!user.collaborators.includes(collaboratorId)) {
-      return res.status(400).json({ error: 'Collaborator not found' });
+    if (!collaboratorExists) {
+      return res.status(400).json({ error: 'Collaborator not found in your list' });
     }
     
-    user.collaborators = user.collaborators.filter(
-      id => !id.equals(collaboratorId)
+    user.collaborators = user.collaborators.filter(id => 
+      id.toString() !== collaboratorId.toString()
     );
     
     await user.save();
@@ -114,6 +120,7 @@ export const removeCollaborator = async (req, res) => {
       collaborators: user.collaborators
     });
   } catch (error) {
+    console.error('Error removing collaborator:', error);
     res.status(400).json({ error: error.message });
   }
 };
