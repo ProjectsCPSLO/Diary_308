@@ -27,6 +27,22 @@ import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
 import EditPostForm from './EditPostForm';
 
+// 1. Import Leaflet components & CSS
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+
+// If you run into marker icon issues, also do the Leaflet icon fix:
+import L from 'leaflet';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
+
 const PostHead = ({ post }) => {
   const { dispatch } = usePostsContext();
   const { user } = useAuthContext();
@@ -337,6 +353,31 @@ const PostHead = ({ post }) => {
               ))}
             </Box>
           )}
+
+          {/* 2. Embed a small map if there's a location */}
+          {post.location && (
+            <Box sx={{ width: '200px', height: '150px', mt: 2 }}>
+              <MapContainer
+                center={[post.location.lat, post.location.lng]}
+                zoom={13}
+                style={{ width: '100%', height: '100%' }}
+                scrollWheelZoom={false}
+                dragging={false}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://openstreetmap.org/copyright">
+                    OpenStreetMap
+                  </a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={[post.location.lat, post.location.lng]}>
+                  <Popup>{post.title}</Popup>
+                </Marker>
+              </MapContainer>
+            </Box>
+          )}
+
+
         </Stack>
       </ListItem>
 
