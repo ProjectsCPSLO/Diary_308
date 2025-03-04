@@ -1,3 +1,4 @@
+// frontend/src/components/EditPostForm.jsx
 import React, { useState, useEffect } from 'react';
 import { usePostsContext } from '../hooks/usePostsContext';
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -13,6 +14,7 @@ import {
 } from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import GeotagLocation from './GeotagLocation.jsx';
 
 const EditPostForm = ({ post, open, onClose, theme }) => {
   const { dispatch } = usePostsContext();
@@ -24,9 +26,8 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
 
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
-  const [date, setDate] = useState(
-    new Date(post.date).toISOString().split('T')[0]
-  );
+  const [date, setDate] = useState(new Date(post.date).toISOString().split('T')[0]);
+  const [location, setLocation] = useState(post.location || null);
 
   useEffect(() => {
     if (!open) {
@@ -36,6 +37,7 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
       setTitle(post.title);
       setContent(post.content);
       setDate(new Date(post.date).toISOString().split('T')[0]);
+      setLocation(post.location || null);
     }
   }, [open, post]);
 
@@ -76,6 +78,7 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
       title,
       content,
       date,
+      location,
     };
 
     try {
@@ -228,6 +231,12 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
               padding: '10px',
             }}
           />
+
+          {/* Geotag component for editing location */}
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="subtitle1">Edit Location</Typography>
+            <GeotagLocation initialPosition={location} onLocationSelect={setLocation} />
+          </Box>
         </Box>
       </DialogContent>
       <DialogActions>

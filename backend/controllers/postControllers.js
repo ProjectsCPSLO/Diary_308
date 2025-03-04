@@ -2,17 +2,21 @@ import mongoose from 'mongoose';
 import Post from '../models/Post.js';
 import bcrypt from 'bcrypt';
 
+// GET all posts
 export const getAllPosts = async (req, res) => {
   try {
+    // Only fetch posts owned by or shared with the current user
     const posts = await Post.find({
       $or: [{ user_id: req.user._id }, { sharedWith: req.user._id }],
     }).sort({ createdAt: -1 });
+
     res.status(200).json(posts);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
+// GET single post
 export const getPost = async (req, res) => {
   console.log('\n=== GET POST REQUEST ===');
   const { id } = req.params;
@@ -33,6 +37,7 @@ export const getPost = async (req, res) => {
       return res.status(404).json({ error: 'Post does not exist' });
     }
 
+    // If this post is password-protected, verify or prompt for password
     if (post.password) {
       console.log({
         postId: post._id,
@@ -45,19 +50,13 @@ export const getPost = async (req, res) => {
           error: 'Password required',
           isPasswordProtected: true,
         });
-      } // Test both trimmed and untrimmed versions
+      }
 
       const passwordTrimmed = password.trim();
       const passwordUntrimmed = password;
 
-      const resultTrimmed = await bcrypt.compare(
-        passwordTrimmed,
-        post.password
-      );
-      const resultUntrimmed = await bcrypt.compare(
-        passwordUntrimmed,
-        post.password
-      );
+      const resultTrimmed = await bcrypt.compare(passwordTrimmed, post.password);
+      const resultUntrimmed = await bcrypt.compare(passwordUntrimmed, post.password);
 
       console.log({
         trimmedResult: resultTrimmed,
@@ -82,8 +81,10 @@ export const getPost = async (req, res) => {
   }
 };
 
+// CREATE a post
 export const createPost = async (req, res) => {
-  const { date, title, content, password, mood, tags } = req.body;
+  // Now also accept 'location' from the request body
+  const { date, title, content, password, mood, tags, location } = req.body;
   const user_id = req.user._id;
 
   console.log('\n=== CREATE POST REQUEST ===');
@@ -93,18 +94,18 @@ export const createPost = async (req, res) => {
   );
 
   try {
+    // If password is provided, hash it
     let hashedPassword = null;
     if (password) {
-      // Hash password only once here
       const salt = await bcrypt.genSalt(10);
       hashedPassword = await bcrypt.hash(password, salt);
 
-      // Verify the hash immediately
+      // (Optional) immediate verification test
       const verifyTest = await bcrypt.compare(password, hashedPassword);
       console.log('Password verification test:', verifyTest);
     }
 
-    // Create post with single hashed password
+    // Create post, including location
     const post = await Post.create({
       date: new Date(date),
       title,
@@ -113,11 +114,13 @@ export const createPost = async (req, res) => {
       mood,
       password: hashedPassword,
       tags: tags ? tags : [],
+      location, // e.g. { lat: 47.6062, lng: -122.3321 }
     });
 
     console.log('Post created with ID:', post._id);
     console.log('Stored password hash:', post.password);
     console.log('Stored tags:', post.tags);
+    console.log('Stored location:', post.location);
 
     res.status(200).json(post);
   } catch (err) {
@@ -126,6 +129,7 @@ export const createPost = async (req, res) => {
   }
 };
 
+// DELETE a post
 export const deletePost = async (req, res) => {
   const { id } = req.params;
 
@@ -135,6 +139,7 @@ export const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(id);
     if (!post) return res.status(404).json({ error: 'post does not exist' });
+
     const deletedPost = await Post.findOneAndDelete({ _id: id });
     res.status(200).json(deletedPost);
   } catch (err) {
@@ -142,6 +147,7 @@ export const deletePost = async (req, res) => {
   }
 };
 
+// UPDATE a post
 export const updatePost = async (req, res) => {
   const { id } = req.params;
 
@@ -151,16 +157,21 @@ export const updatePost = async (req, res) => {
   try {
     const post = await Post.findById(id);
     if (!post) return res.status(404).json({ error: 'post does not exist' });
+
+    // Overwrite with whatever is in req.body (including location if provided)
     const updatedPost = await Post.findOneAndUpdate(
       { _id: id },
-      { ...req.body }
+      { ...req.body },
+      { new: true } // Return the updated doc
     );
+
     res.status(200).json(updatedPost);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
+// VERIFY password
 export const verifyPassword = async (req, res) => {
   console.log('\n=== PASSWORD VERIFICATION REQUEST ===');
   const { id } = req.params;
@@ -198,6 +209,7 @@ export const verifyPassword = async (req, res) => {
   }
 };
 
+// SHARE a post
 export const sharePost = async (req, res) => {
   const { id } = req.params;
   const { collaboratorIds } = req.body;
@@ -211,7 +223,7 @@ export const sharePost = async (req, res) => {
 
     // Filter out collaborators that are already in sharedWith
     const newCollaborators = collaboratorIds.filter(
-      (id) => !post.sharedWith.includes(id)
+      (colId) => !post.sharedWith.includes(colId)
     );
 
     if (newCollaborators.length > 0) {

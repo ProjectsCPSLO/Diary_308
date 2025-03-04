@@ -11,6 +11,8 @@ import {
   TextField,
   Button,
 } from '@mui/material';
+// Import Leaflet components for map preview
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 const DiaryPost = () => {
   const { id } = useParams();
@@ -26,7 +28,6 @@ const DiaryPost = () => {
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-
     try {
       const response = await fetch(
         `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${id}/verify`,
@@ -39,14 +40,11 @@ const DiaryPost = () => {
           body: JSON.stringify({ password }),
         }
       );
-
       const json = await response.json();
-
       if (!response.ok) {
         setError(json.error || 'Failed to verify password');
         return;
       }
-
       setPost(json);
       setPasswordRequired(false);
       setPassword('');
@@ -60,15 +58,16 @@ const DiaryPost = () => {
     if (user && id) {
       const checkPost = async () => {
         try {
-          const response = await fetch(`https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${id}`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
-          });
-  
+          const response = await fetch(
+            `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${id}`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
+          );
           const json = await response.json();
-  
           if (!response.ok) {
             if (json.isPasswordProtected) {
               setPasswordRequired(true);
@@ -87,19 +86,13 @@ const DiaryPost = () => {
           setIsLoading(false);
         }
       };
-  
       checkPost();
     }
   }, [id, user]);
 
   if (isLoading) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
         <Typography>Loading...</Typography>
       </Box>
     );
@@ -123,9 +116,7 @@ const DiaryPost = () => {
         transition: 'background-color 0.3s ease',
       }}
     >
-      {isLoading ? (
-        <Typography>Loading...</Typography>
-      ) : passwordRequired ? (
+      {passwordRequired ? (
         <Paper
           elevation={3}
           sx={{
@@ -186,10 +177,28 @@ const DiaryPost = () => {
             <Typography variant="body2" gutterBottom>
               {post?.date && new Date(post.date).toLocaleString()}
             </Typography>
-            <Typography
-              variant="body1"
-              dangerouslySetInnerHTML={{ __html: post?.content }}
-            />
+            <Typography variant="body1" dangerouslySetInnerHTML={{ __html: post?.content }} />
+            {/* Display the location if it exists */}
+            {post?.location && (
+              <Box sx={{ mt: 2, height: '300px' }}>
+                <Typography variant="subtitle1" gutterBottom>
+                  Location:
+                </Typography>
+                <MapContainer
+                  center={[post.location.lat, post.location.lng]}
+                  zoom={13}
+                  style={{ height: '100%', width: '100%' }}
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker position={[post.location.lat, post.location.lng]}>
+                    <Popup>Selected Location</Popup>
+                  </Marker>
+                </MapContainer>
+              </Box>
+            )}
           </CardContent>
         </Card>
       )}

@@ -1,3 +1,4 @@
+// models/Post.js
 import { Schema, model } from 'mongoose';
 
 const PostSchema = new Schema(
@@ -27,9 +28,9 @@ const PostSchema = new Schema(
       default: 'Neutral',
     },
     password: {
-      type: String, // Add password field
+      type: String,
       required: false,
-      default: null, // Default value for new documents
+      default: null,
     },
     sharedWith: [
       {
@@ -40,6 +41,11 @@ const PostSchema = new Schema(
     tags: {
       type: [String],
       default: [],
+    },
+    // NEW: location field
+    location: {
+      lat: { type: Number },
+      lng: { type: Number },
     },
   },
   {
