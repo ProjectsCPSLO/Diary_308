@@ -11,10 +11,12 @@ import {
   TextField,
   Box,
   Typography,
+  FormControlLabel,
+  Switch,
 } from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import GeotagLocation from './GeotagLocation.jsx';
+import GeotagLocation from './GeotagLocation';
 
 const EditPostForm = ({ post, open, onClose, theme }) => {
   const { dispatch } = usePostsContext();
@@ -28,6 +30,7 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
   const [content, setContent] = useState(post.content);
   const [date, setDate] = useState(new Date(post.date).toISOString().split('T')[0]);
   const [location, setLocation] = useState(post.location || null);
+  const [geotagEnabled, setGeotagEnabled] = useState(!!post.location);
 
   useEffect(() => {
     if (!open) {
@@ -38,16 +41,16 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
       setContent(post.content);
       setDate(new Date(post.date).toISOString().split('T')[0]);
       setLocation(post.location || null);
+      setGeotagEnabled(!!post.location);
     }
   }, [open, post]);
 
   const handlePasswordVerify = async (e) => {
     e.preventDefault();
     setPasswordError('');
-
     try {
       const response = await fetch(
-        `http://localhost:4000/api/posts/${post._id}/verify`,
+        `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${post._id}/verify`,
         {
           method: 'POST',
           headers: {
@@ -57,9 +60,7 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
           body: JSON.stringify({ password }),
         }
       );
-
       const json = await response.json();
-
       if (response.ok) {
         setIsPasswordVerified(true);
         setPassword('');
@@ -73,16 +74,14 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const updatedPost = {
       title,
       content,
       date,
-      location,
+      location: geotagEnabled ? location : null,
     };
-
     try {
-      const response = await fetch(
+      const response = await fetch( 
         `http://localhost:4000/api/posts/${post._id}`,
         {
           method: 'PATCH',
@@ -93,15 +92,9 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
           body: JSON.stringify(updatedPost),
         }
       );
-
       const json = await response.json();
-
       if (response.ok) {
-        const completeUpdatedPost = {
-          ...post,
-          ...updatedPost,
-        };
-
+        const completeUpdatedPost = { ...post, ...updatedPost };
         dispatch({ type: 'UPDATE_POST', payload: completeUpdatedPost });
         onClose();
       } else {
@@ -112,61 +105,25 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
     }
   };
 
-  if (!isPasswordVerified) {
-    return (
-      <Dialog
-        open={open}
-        onClose={onClose}
-        PaperProps={{
-          sx: {
-            backgroundColor: theme === 'dark' ? '#424242' : '#fff',
-            color: theme === 'dark' ? '#fff' : '#000',
+  const handleGeotagToggle = (e) => {
+    const enabled = e.target.checked;
+    setGeotagEnabled(enabled);
+    if (!enabled) {
+      setLocation(null);
+    } else {
+      if (!location && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const userPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            setLocation(userPos);
           },
-        }}
-      >
-        <DialogTitle>Password Required</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1" sx={{ mb: 2 }}>
-            This post is password protected. Please enter the password to edit.
-          </Typography>
-          <form onSubmit={handlePasswordVerify}>
-            <TextField
-              type="password"
-              label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={!!passwordError}
-              helperText={passwordError}
-              fullWidth
-              sx={{
-                '& .MuiInputBase-input': {
-                  color: theme === 'dark' ? '#fff' : '#000',
-                },
-                '& .MuiInputLabel-root': {
-                  color: theme === 'dark' ? '#fff' : '#000',
-                },
-              }}
-            />
-            <Box
-              sx={{
-                mt: 2,
-                display: 'flex',
-                justifyContent: 'flex-end',
-                gap: 1,
-              }}
-            >
-              <Button onClick={onClose} color="secondary">
-                Cancel
-              </Button>
-              <Button type="submit" variant="contained" color="primary">
-                Verify
-              </Button>
-            </Box>
-          </form>
-        </DialogContent>
-      </Dialog>
-    );
-  }
+          (err) => {
+            console.error('Error retrieving location:', err);
+          }
+        );
+      }
+    }
+  };
 
   return (
     <Dialog
@@ -190,14 +147,6 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             margin="normal"
-            sx={{
-              '& .MuiInputBase-input': {
-                color: theme === 'dark' ? '#fff' : '#000',
-              },
-              '& .MuiInputLabel-root': {
-                color: theme === 'dark' ? '#fff' : '#000',
-              },
-            }}
           />
 
           <TextField
@@ -208,14 +157,6 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
             onChange={(e) => setDate(e.target.value)}
             margin="normal"
             InputLabelProps={{ shrink: true }}
-            sx={{
-              '& .MuiInputBase-input': {
-                color: theme === 'dark' ? '#fff' : '#000',
-              },
-              '& .MuiInputLabel-root': {
-                color: theme === 'dark' ? '#fff' : '#000',
-              },
-            }}
           />
 
           <ReactQuill
@@ -232,11 +173,32 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
             }}
           />
 
-          {/* Geotag component for editing location */}
+          {/* Toggle for Geotag */}
           <Box sx={{ mt: 2 }}>
-            <Typography variant="subtitle1">Edit Location</Typography>
-            <GeotagLocation initialPosition={location} onLocationSelect={setLocation} />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={geotagEnabled}
+                  onChange={handleGeotagToggle}
+                  color="primary"
+                />
+              }
+              label="Geotag?"
+            />
           </Box>
+
+          {/* Show location selection only if geotagging is enabled */}
+          {geotagEnabled && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="subtitle1">Update Location</Typography>
+              <GeotagLocation
+  key={location ? `${location.lat}-${location.lng}` : 'no-location'}
+  initialPosition={location}
+  onLocationSelect={setLocation}
+/>
+
+            </Box>
+          )}
         </Box>
       </DialogContent>
       <DialogActions>

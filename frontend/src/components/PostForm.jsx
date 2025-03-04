@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { usePostsContext } from '../hooks/usePostsContext';
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -13,6 +13,8 @@ import {
   InputLabel,
   FormControl,
   Alert,
+  Switch,
+  FormControlLabel
 } from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -32,13 +34,17 @@ const PostForm = () => {
   const { dispatch } = usePostsContext();
   const { user } = useAuthContext();
   const { theme } = useContext(ThemeContext);
+  
   const [content, setContent] = useState('');
   const [mood, setMood] = useState('');
   const [password, setPassword] = useState('');
   const [currentPrompt, setCurrentPrompt] = useState('');
   const [tags, setTags] = useState([]);
-  // New state for the selected location
+  
+  // State for the selected location; null means no geotag is attached.
   const [location, setLocation] = useState(null);
+  // Toggle to control if geotagging is enabled
+  const [geotagEnabled, setGeotagEnabled] = useState(true);
 
   const editorModules = {
     toolbar: [
@@ -68,34 +74,53 @@ const PostForm = () => {
     setCurrentPrompt(prompt);
   };
 
+  // When the geotag toggle changes, update the location state accordingly.
+  const handleGeotagToggle = (e) => {
+    const enabled = e.target.checked;
+    setGeotagEnabled(enabled);
+    if (!enabled) {
+      // User doesn't want to geotag: clear location.
+      setLocation(null);
+    } else {
+      // If enabling and no location is set, try to get the user's current location.
+      if (!location && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const userPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            setLocation(userPos);
+          },
+          (err) => {
+            console.error('Error retrieving location:', err);
+          }
+        );
+      }
+    }
+  };
+
   const onSubmit = async (data) => {
     const dateParts = data.date.split('-');
     const year = parseInt(dateParts[0], 10);
-    const month = parseInt(dateParts[1], 10) - 1; 
+    const month = parseInt(dateParts[1], 10) - 1;
     const day = parseInt(dateParts[2], 10);
-    
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
-    
     const localDate = new Date(year, month, day, hours, minutes, seconds);
-    
-    console.log('Form date selected:', data.date);
-    console.log('Created post date-time:', localDate.toLocaleString());
-    console.log('Tags before submission:', tags);
-    
+
     const post = {
       date: localDate.toISOString(),
       title: data.title,
       content: content,
       mood: mood,
-      password: data.password ? data.password : null,
+      password: data.password || null,
       tags: tags,
-      location: location, // Include the selected location
+      // Only attach the location if geotagging is enabled
+      location: geotagEnabled ? location : null,
     };
-    
+
     console.log('Full post data:', post);
+
     try {
       const response = await fetch('http://localhost:4000/api/posts', {
         method: 'POST',
@@ -112,7 +137,10 @@ const PostForm = () => {
         setMood('neutral');
         setCurrentPrompt('');
         setTags([]);
-        setLocation(null); // Reset location after submission
+        // Clear location only if geotagging is enabled; otherwise, leave it as null.
+        if (geotagEnabled) {
+          setLocation(null);
+        }
         dispatch({ type: 'CREATE_POST', payload: json });
       } else {
         setError('submit', { message: json.error || 'An error occurred.' });
@@ -165,9 +193,9 @@ const PostForm = () => {
           <Typography variant="h5" align="center" gutterBottom>
             Create a Post
           </Typography>
-  
+
           <WritingPrompts onSelectPrompt={handlePromptSelect} />
-  
+
           {currentPrompt && (
             <Alert
               severity="info"
@@ -180,7 +208,7 @@ const PostForm = () => {
               Prompt: {currentPrompt}
             </Alert>
           )}
-  
+
           <TextField
             label="Title"
             variant="outlined"
@@ -189,35 +217,31 @@ const PostForm = () => {
             error={!!errors.title}
             helperText={errors.title?.message}
             InputProps={{
-              style: {
-                color: theme === 'dark' ? '#90caf9' : '#000',
-              },
+              style: { color: theme === 'dark' ? '#90caf9' : '#000' },
             }}
             InputLabelProps={{
               style: { color: theme === 'dark' ? '#90caf9' : '#000' },
             }}
           />
-  
+
           <TextField
             label="Date"
             type="date"
             variant="outlined"
             fullWidth
-            defaultValue={new Date().toISOString().split('T')[0]} 
+            defaultValue={new Date().toISOString().split('T')[0]}
             {...register('date', { required: 'Date is required' })}
             error={!!errors.date}
             helperText={errors.date?.message}
             InputProps={{
-              style: {
-                color: theme === 'dark' ? '#90caf9' : '#000',
-              },
+              style: { color: theme === 'dark' ? '#90caf9' : '#000' },
             }}
             InputLabelProps={{
               style: { color: theme === 'dark' ? '#90caf9' : '#000' },
               shrink: true,
             }}
           />
-  
+
           <Box sx={{ minHeight: '200px' }}>
             <ReactQuill
               theme="snow"
@@ -232,7 +256,7 @@ const PostForm = () => {
               }}
             />
           </Box>
-  
+
           <FormControl fullWidth>
             <InputLabel>Mood</InputLabel>
             <Select
@@ -247,7 +271,7 @@ const PostForm = () => {
               <MenuItem value="Neutral">Neutral</MenuItem>
             </Select>
           </FormControl>
-  
+
           <TextField
             label="Password (Optional)"
             type="password"
@@ -258,21 +282,37 @@ const PostForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             helperText="Add a password to protect your post (optional)"
           />
-  
+
           <TagsInput tags={tags} setTags={setTags} theme={theme} />
-  
-          {/* Geotag component for selecting location */}
+
+          {/* Toggle for Geotag */}
           <Box sx={{ mt: 2 }}>
-            <Typography variant="subtitle1">Select Location</Typography>
-            <GeotagLocation onLocationSelect={setLocation} />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={geotagEnabled}
+                  onChange={handleGeotagToggle}
+                  color="primary"
+                />
+              }
+              label="Geotag?"
+            />
           </Box>
-  
+
+          {/* Only render GeotagLocation if geotag is enabled */}
+          {geotagEnabled && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="subtitle1">Select Location</Typography>
+              <GeotagLocation onLocationSelect={setLocation} />
+            </Box>
+          )}
+
           {errors.submit && (
             <Typography variant="body2" color="error" align="center">
               {errors.submit.message}
             </Typography>
           )}
-  
+
           <Button
             type="submit"
             variant="contained"
