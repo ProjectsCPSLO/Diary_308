@@ -11,6 +11,8 @@ import {
   TextField,
   Box,
   Typography,
+  FormControlLabel,
+  Switch,
 } from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -28,6 +30,7 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
   const [content, setContent] = useState(post.content);
   const [date, setDate] = useState(new Date(post.date).toISOString().split('T')[0]);
   const [location, setLocation] = useState(post.location || null);
+  const [geotagEnabled, setGeotagEnabled] = useState(!!post.location);
 
   useEffect(() => {
     if (!open) {
@@ -38,6 +41,7 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
       setContent(post.content);
       setDate(new Date(post.date).toISOString().split('T')[0]);
       setLocation(post.location || null);
+      setGeotagEnabled(!!post.location);
     }
   }, [open, post]);
 
@@ -78,7 +82,7 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
       title,
       content,
       date,
-      location,
+      location: geotagEnabled ? location : null,
     };
 
     try {
@@ -109,6 +113,26 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
       }
     } catch (error) {
       console.error('Error updating post:', error);
+    }
+  };
+
+  const handleGeotagToggle = (e) => {
+    const enabled = e.target.checked;
+    setGeotagEnabled(enabled);
+    if (!enabled) {
+      setLocation(null);
+    } else {
+      if (!location && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const userPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            setLocation(userPos);
+          },
+          (err) => {
+            console.error('Error retrieving location:', err);
+          }
+        );
+      }
     }
   };
 
@@ -232,11 +256,32 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
             }}
           />
 
-          {/* Geotag component for editing location */}
+          {/* Toggle for Geotag */}
           <Box sx={{ mt: 2 }}>
-            <Typography variant="subtitle1">Edit Location</Typography>
-            <GeotagLocation initialPosition={location} onLocationSelect={setLocation} />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={geotagEnabled}
+                  onChange={handleGeotagToggle}
+                  color="primary"
+                />
+              }
+              label="Geotag?"
+            />
           </Box>
+
+                    {/* Show location selection only if geotagging is enabled */}
+                    {geotagEnabled && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="subtitle1">Update Location</Typography>
+              <GeotagLocation
+  key={location ? `${location.lat}-${location.lng}` : 'no-location'}
+  initialPosition={location}
+  onLocationSelect={setLocation}
+/>
+
+            </Box>
+          )}
         </Box>
       </DialogContent>
       <DialogActions>

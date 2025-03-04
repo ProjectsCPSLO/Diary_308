@@ -15,7 +15,7 @@ import 'leaflet/dist/leaflet.css';
 // Material UI imports
 import { TextField, Button, Box } from '@mui/material';
 
-// Fix default icon paths
+// Fix default icon paths if needed
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -27,14 +27,13 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-// This component listens for map clicks to update the location.
+// Component that listens for map clicks to update location.
 function LocationMarker({ position, onLocationSelect }) {
   useMapEvents({
     click(e) {
       onLocationSelect(e.latlng);
     },
   });
-
   return position ? (
     <Marker position={position}>
       <Popup>You chose this location</Popup>
@@ -42,12 +41,12 @@ function LocationMarker({ position, onLocationSelect }) {
   ) : null;
 }
 
-// This component uses the map instance to re-center the map whenever 'coords' changes.
+// Component to re-center the map when coordinates change.
 function SearchHandler({ coords }) {
   const map = useMap();
   useEffect(() => {
     if (coords) {
-      map.setView([coords.lat, coords.lng], 16);
+      map.setView([coords.lat, coords.lng], 13);
     }
   }, [coords, map]);
   return null;
@@ -57,33 +56,51 @@ const GeotagLocation = ({ onLocationSelect, initialPosition = null }) => {
   const [position, setPosition] = useState(initialPosition);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Called when the user searches for a location.
+  // On mount, if no position, try to get the user's current location.
+  useEffect(() => {
+    if (!initialPosition && !position && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const userPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          setPosition(userPos);
+          onLocationSelect && onLocationSelect(userPos);
+        },
+        (err) => {
+          console.error('Error retrieving location:', err);
+          // Fallback to San Francisco if geolocation fails.
+          setPosition({ lat: 37.7749, lng: -122.4194 });
+          onLocationSelect && onLocationSelect({ lat: 37.7749, lng: -122.4194 });
+        }
+      );
+    }
+  }, [initialPosition, position, onLocationSelect]);
+
+  // Handle geocoding when the user searches.
   const handleSearch = async () => {
-    console.log("Searching for:", searchQuery);
+    console.log('Searching for:', searchQuery);
     if (!searchQuery) return;
 
     try {
       const provider = new OpenStreetMapProvider();
       const results = await provider.search({ query: searchQuery });
-      console.log("Geocode results:", results);
+      console.log('Geocode results:', results);
 
       if (results && results.length > 0) {
-        // x is longitude, y is latitude
+        // x: longitude, y: latitude.
         const { x, y } = results[0];
         const newPosition = { lat: y, lng: x };
-        console.log("Using coords:", y, x);
-
+        console.log('Using coords:', newPosition);
         setPosition(newPosition);
         onLocationSelect && onLocationSelect(newPosition);
       } else {
-        console.log("No results found for:", searchQuery);
+        console.log('No results found for:', searchQuery);
       }
     } catch (err) {
-      console.error("Error with geocoding:", err);
+      console.error('Error with geocoding:', err);
     }
   };
 
-  // Allow search via Enter key.
+  // Allow search via the Enter key.
   const handleSearchKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -91,14 +108,30 @@ const GeotagLocation = ({ onLocationSelect, initialPosition = null }) => {
     }
   };
 
-  // Update position when initialPosition changes (e.g., in edit mode).
+  // Reset map to user's current location without hiding it.
+  const resetMap = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const userPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          setPosition(userPos);
+          onLocationSelect && onLocationSelect(userPos);
+        },
+        (err) => {
+          console.error('Error retrieving location:', err);
+        }
+      );
+    }
+  };
+
+  // Update position when initialPosition changes.
   useEffect(() => {
     setPosition(initialPosition);
   }, [initialPosition]);
 
   return (
     <Box>
-      {/* Search row: text field + button */}
+      {/* Search row: text field + Search button */}
       <Box display="flex" gap={1} mb={1}>
         <TextField
           label="Search location..."
@@ -113,11 +146,19 @@ const GeotagLocation = ({ onLocationSelect, initialPosition = null }) => {
         </Button>
       </Box>
 
+      {/* Reset Map button */}
+      <Box mb={1}>
+        <Button variant="outlined" color="primary" onClick={resetMap}>
+          Reset Map
+        </Button>
+      </Box>
+
       <MapContainer
+        key={position ? `${position.lat}-${position.lng}` : 'default'}
         center={
           position
             ? [position.lat, position.lng]
-            : [37.7749, -122.4194] // Fallback center (San Francisco)
+            : [37.7749, -122.4194] // Fallback if no location is set.
         }
         zoom={13}
         style={{ height: '400px', width: '100%' }}
@@ -135,7 +176,6 @@ const GeotagLocation = ({ onLocationSelect, initialPosition = null }) => {
             onLocationSelect && onLocationSelect(latlng);
           }}
         />
-        {/* Re-center the map when position updates */}
         <SearchHandler coords={position} />
       </MapContainer>
     </Box>

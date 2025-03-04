@@ -13,6 +13,8 @@ import {
   InputLabel,
   FormControl,
   Alert,
+  Switch,
+  FormControlLabel
 } from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -32,13 +34,17 @@ const PostForm = () => {
   const { dispatch } = usePostsContext();
   const { user } = useAuthContext();
   const { theme } = useContext(ThemeContext);
+
   const [content, setContent] = useState('');
   const [mood, setMood] = useState('');
   const [password, setPassword] = useState('');
   const [currentPrompt, setCurrentPrompt] = useState('');
   const [tags, setTags] = useState([]);
+
   // New state for the selected location
   const [location, setLocation] = useState(null);
+  // Toggle to control if geotagging is enabled
+  const [geotagEnabled, setGeotagEnabled] = useState(true);
 
   const editorModules = {
     toolbar: [
@@ -68,6 +74,29 @@ const PostForm = () => {
     setCurrentPrompt(prompt);
   };
 
+    // When the geotag toggle changes, update the location state accordingly.
+    const handleGeotagToggle = (e) => {
+      const enabled = e.target.checked;
+      setGeotagEnabled(enabled);
+      if (!enabled) {
+        // User doesn't want to geotag: clear location.
+        setLocation(null);
+      } else {
+        // If enabling and no location is set, try to get the user's current location.
+        if (!location && navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              const userPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+              setLocation(userPos);
+            },
+            (err) => {
+              console.error('Error retrieving location:', err);
+            }
+          );
+        }
+      }
+    };
+
   const onSubmit = async (data) => {
     const dateParts = data.date.split('-');
     const year = parseInt(dateParts[0], 10);
@@ -92,7 +121,7 @@ const PostForm = () => {
       mood: mood,
       password: data.password ? data.password : null,
       tags: tags,
-      location: location, // Include the selected location
+      location: geotagEnabled ? location : null,
     };
     
     console.log('Full post data:', post);
@@ -112,7 +141,10 @@ const PostForm = () => {
         setMood('neutral');
         setCurrentPrompt('');
         setTags([]);
-        setLocation(null); // Reset location after submission
+        // Clear location only if geotagging is enabled; otherwise, leave it as null.
+        if (geotagEnabled) {
+          setLocation(null);
+        }
         dispatch({ type: 'CREATE_POST', payload: json });
       } else {
         setError('submit', { message: json.error || 'An error occurred.' });
@@ -261,12 +293,28 @@ const PostForm = () => {
   
           <TagsInput tags={tags} setTags={setTags} theme={theme} />
   
-          {/* Geotag component for selecting location */}
-          <Box sx={{ mt: 2 }}>
-            <Typography variant="subtitle1">Select Location</Typography>
-            <GeotagLocation onLocationSelect={setLocation} />
+                    {/* Toggle for Geotag */}
+                    <Box sx={{ mt: 2 }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={geotagEnabled}
+                  onChange={handleGeotagToggle}
+                  color="primary"
+                />
+              }
+              label="Geotag?"
+            />
           </Box>
-  
+
+          {/* Only render GeotagLocation if geotag is enabled */}
+          {geotagEnabled && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="subtitle1">Select Location</Typography>
+              <GeotagLocation onLocationSelect={setLocation} />
+            </Box>
+          )}
+
           {errors.submit && (
             <Typography variant="body2" color="error" align="center">
               {errors.submit.message}
