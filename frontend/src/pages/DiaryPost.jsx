@@ -30,7 +30,7 @@ const DiaryPost = () => {
     setError(null);
     try {
       const response = await fetch(
-        `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${id}/verify`,
+        `http://localhost:4000/api/posts/${id}?password=${password}`,
         {
           method: 'POST',
           headers: {
@@ -59,7 +59,7 @@ const DiaryPost = () => {
       const checkPost = async () => {
         try {
           const response = await fetch(
-            `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${id}`,
+            `http://localhost:4000/api/posts/${id}`,
             {
               method: 'GET',
               headers: {
