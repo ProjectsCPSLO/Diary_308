@@ -16,5 +16,7 @@ router.post('/login', loginUser);
 router.get('/profile', requireAuth, getProfile);
 router.get('/collaborators', requireAuth, getCollaborators);
 router.post('/add-collaborator', requireAuth, addCollaborator);
+router.post('/remove-collaborator', requireAuth, removeCollaborator);
+
 
 export default router;

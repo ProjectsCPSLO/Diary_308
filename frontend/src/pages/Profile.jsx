@@ -15,9 +15,11 @@ import {
   Alert,
   Card,
   CardContent,
+  IconButton,
 } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PersonIcon from '@mui/icons-material/Person';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Profile = () => {
   const { user } = useAuthContext();
@@ -118,6 +120,47 @@ const Profile = () => {
       setNotification({
         open: true,
         message: 'Error adding collaborator',
+        severity: 'error',
+      });
+    }
+  };
+
+  const handleRemoveCollaborator = async (collaboratorId) => {
+    try {
+      const response = await fetch(
+        'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/user/remove-collaborator',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ collaboratorId }),
+        }
+      );
+
+      const json = await response.json();
+
+      if (response.ok) {
+        // Update the collaborators list in state
+        setCollaborators(collaborators.filter(c => c._id !== collaboratorId));
+        setNotification({
+          open: true,
+          message: 'Collaborator removed successfully!',
+          severity: 'success',
+        });
+      } else {
+        setNotification({
+          open: true,
+          message: json.error || 'Failed to remove collaborator',
+          severity: 'error',
+        });
+      }
+    } catch (error) {
+      console.error('Error removing collaborator:', error);
+      setNotification({
+        open: true,
+        message: 'Error removing collaborator',
         severity: 'error',
       });
     }
@@ -286,7 +329,25 @@ const Profile = () => {
               {collaborators.length > 0 ? (
                 collaborators.map((collaborator, index) => (
                   <React.Fragment key={collaborator._id || index}>
-                    <ListItem>
+                    <ListItem
+                      secondaryAction={
+                        <IconButton 
+                          edge="end" 
+                          aria-label="delete"
+                          onClick={() => handleRemoveCollaborator(collaborator._id)}
+                          sx={{
+                            color: theme === 'dark' ? '#e57373' : '#d32f2f',
+                            '&:hover': {
+                              backgroundColor: theme === 'dark' 
+                                ? 'rgba(229, 115, 115, 0.2)' 
+                                : 'rgba(211, 47, 47, 0.1)',
+                            },
+                          }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      }
+                    >
                       <ListItemText
                         primary={collaborator.email}
                         sx={{

@@ -85,4 +85,35 @@ export const addCollaborator = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+
+};
+
+// Removes Collaborator 
+export const removeCollaborator = async (req, res) => {
+  const { collaboratorId } = req.body;
+
+  try {
+    const user = await User.findById(req.user._id);
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    if (!user.collaborators.includes(collaboratorId)) {
+      return res.status(400).json({ error: 'Collaborator not found' });
+    }
+    
+    user.collaborators = user.collaborators.filter(
+      id => !id.equals(collaboratorId)
+    );
+    
+    await user.save();
+    
+    res.status(200).json({
+      message: 'Collaborator removed successfully',
+      collaborators: user.collaborators
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
