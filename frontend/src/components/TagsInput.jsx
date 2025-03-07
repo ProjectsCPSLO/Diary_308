@@ -32,7 +32,7 @@ const TagsInput = ({ tags, setTags, theme }) => {
           backgroundColor: theme === 'dark' ? '#616161' : 'inherit',
           borderRadius: '4px',
           '& .MuiInputBase-input': {
-            color: theme === 'dark' ? 'white' : 'black',
+            color: theme === 'dark' ? 'white' : '#90caf9',
           },
         }}
       />

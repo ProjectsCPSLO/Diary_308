@@ -126,7 +126,7 @@ const PostForm = () => {
     
     console.log('Full post data:', post);
     try {
-      const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts', {
+      const response = await fetch('http://localhost:4000/api/posts', {
         method: 'POST',
         body: JSON.stringify(post),
         headers: {
@@ -138,7 +138,6 @@ const PostForm = () => {
       if (response.ok) {
         reset({ title: '', date: '', password: '' });
         setContent('');
-        setMood('neutral');
         setCurrentPrompt('');
         setTags([]);
         // Clear location only if geotagging is enabled; otherwise, leave it as null.
@@ -194,7 +193,7 @@ const PostForm = () => {
             marginTop: '20px',
           }}
         >
-          <Typography variant="h5" align="center" gutterBottom>
+          <Typography variant="h4" align="center" gutterBottom sx={{ color: theme === 'dark' ? '#90caf9' : '#000', mb: 3,}}>
             Create a Post
           </Typography>
   
@@ -271,6 +270,10 @@ const PostForm = () => {
               value={mood}
               onChange={(e) => setMood(e.target.value)}
               label="Mood"
+              style={{
+                backgroundColor: theme === 'dark',
+                color: theme === 'dark' ? '#90caf9' : '#000',
+              }}
             >
               <MenuItem value="Happy">Happy</MenuItem>
               <MenuItem value="Sad">Sad</MenuItem>

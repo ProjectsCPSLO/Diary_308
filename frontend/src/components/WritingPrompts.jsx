@@ -47,7 +47,7 @@ const WritingPrompts = ({ onSelectPrompt }) => {
       variant="outlined"
       startIcon={<AutoAwesomeIcon />}
       sx={{
-        width: 'fit-content',
+        width: '34.5vh',
         color: '#1976d2',
         borderColor: '#1976d2',
         '&:hover': {

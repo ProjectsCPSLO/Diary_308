@@ -18,7 +18,7 @@ const MoodCalendar = () => {
             backgroundColor: moodColors[entry.mood],
             width: '100%',
             height: '100%',
-            borderRadius: '4px',
+            borderRadius: '10px',
           }}
         ></div>
       );

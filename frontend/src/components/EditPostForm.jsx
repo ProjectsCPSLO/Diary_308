@@ -51,7 +51,7 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
 
     try {
       const response = await fetch(
-        `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${post._id}/verify`,
+        `http://localhost:4000/api/posts/${post._id}/verify`,
         {
           method: 'POST',
           headers: {
@@ -87,7 +87,7 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
 
     try {
       const response = await fetch(
-        `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${post._id}`,
+        `http://localhost:4000/api/posts/${post._id}`,
         {
           method: 'PATCH',
           headers: {
