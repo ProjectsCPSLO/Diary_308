@@ -12,7 +12,7 @@ export const useLogin = () => {
     setError(null);
 
     try {
-      const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/user/login', {
+      const response = await fetch('http://localhost:4000/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
