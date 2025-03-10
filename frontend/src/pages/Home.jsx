@@ -69,15 +69,11 @@ const Home = () => {
     }
   };
 
-  
   const getFilteredPosts = () => {
-    
     const basePostsList = searchResults || posts;
-    
-    
+
     if (!isTagFilterActive) return basePostsList;
-    
-    
+
     return basePostsList?.filter((post) => {
       if (!post.tags) return false;
       return selectedTags.some((tag) => post.tags.includes(tag));
@@ -127,22 +123,23 @@ const Home = () => {
       }}
     >
       <Container maxWidth="xl">
-        <Grid container spacing={4}>
+        <Grid container spacing={4} alignItems="flex-start"> {/* Align items at the top */}
+          {/* Posts Section */}
           <Grid item xs={12} md={8}>
             <Typography
-              variant="h4"
+              variant="h3"
               sx={{
                 color: theme === 'dark' ? '#90caf9' : '#000',
                 mb: 3,
               }}
             >
-              Posts
+              POSTS
             </Typography>
-            
-            
+
+            {/* Search Bar */}
             <SearchBar onSearchResults={handleSearchResults} />
 
-            
+            {/* Filter Section */}
             <Box
               sx={{
                 mb: 2,
@@ -176,6 +173,7 @@ const Home = () => {
                 </span>
               </Button>
 
+              {/* Tags */}
               <Box
                 sx={{
                   display: 'flex',
@@ -196,7 +194,7 @@ const Home = () => {
               </Box>
             </Box>
 
-           
+            {/* Search Results */}
             {searchResults && (
               <Box
                 sx={{
@@ -222,7 +220,7 @@ const Home = () => {
               </Box>
             )}
 
-            
+            {/* No Posts Found */}
             {filteredPosts?.length === 0 && (
               <Paper
                 elevation={2}
@@ -240,7 +238,7 @@ const Home = () => {
               </Paper>
             )}
 
-            
+            {/* Posts Grid */}
             <Grid container spacing={2}>
               {filteredPosts?.map((post) => (
                 <Grid item xs={12} sm={6} key={post._id}>
@@ -250,16 +248,16 @@ const Home = () => {
             </Grid>
           </Grid>
 
+          {/* Create Post Section */}
           <Grid item xs={12} md={4}>
             <Typography
               variant="h4"
               sx={{
                 color: theme === 'dark' ? '#90caf9' : '#000',
                 mb: 3,
-                marginLeft: '25px',
               }}
             >
-              Create a Post
+              
             </Typography>
             <PostForm />
           </Grid>
