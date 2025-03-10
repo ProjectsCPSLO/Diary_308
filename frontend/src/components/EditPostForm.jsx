@@ -143,14 +143,26 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
         onClose={onClose}
         PaperProps={{
           sx: {
-            backgroundColor: theme === 'dark' ? '#424242' : '#fff',
-            color: theme === 'dark' ? '#fff' : '#000',
+            backgroundColor: theme === 'dark' ? '#2d2d2d' : '#FFFFFF',
+            color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+            borderRadius: '12px',
+            boxShadow: theme === 'dark' 
+              ? '0 8px 32px rgba(0, 0, 0, 0.4)'
+              : '0 8px 32px rgba(0, 0, 0, 0.1)',
+            border: theme === 'dark' ? '1px solid #444' : 'none',
           },
         }}
       >
-        <DialogTitle>Password Required</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1" sx={{ mb: 2 }}>
+        <DialogTitle sx={{ 
+          fontWeight: 'bold',
+          color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+          borderBottom: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+          p: 3
+        }}>
+          Password Required
+        </DialogTitle>
+        <DialogContent sx={{ p: 3 }}>
+          <Typography variant="body1" sx={{ mb: 2, color: theme === 'dark' ? '#FFFFFF' : '#0D3B66' }}>
             This post is password protected. Please enter the password to edit.
           </Typography>
           <form onSubmit={handlePasswordVerify}>
@@ -164,25 +176,60 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
               fullWidth
               sx={{
                 '& .MuiInputBase-input': {
-                  color: theme === 'dark' ? '#fff' : '#000',
+                  color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
                 },
                 '& .MuiInputLabel-root': {
-                  color: theme === 'dark' ? '#fff' : '#000',
+                  color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                },
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.3)' : 'rgba(13, 59, 102, 0.3)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                  },
+                },
+                '& .MuiFormHelperText-root.Mui-error': {
+                  color: theme === 'dark' ? '#e57373' : '#d32f2f',
                 },
               }}
             />
             <Box
               sx={{
-                mt: 2,
+                mt: 3,
                 display: 'flex',
                 justifyContent: 'flex-end',
-                gap: 1,
+                gap: 2,
               }}
             >
-              <Button onClick={onClose} color="secondary">
+              <Button 
+                onClick={onClose} 
+                sx={{ 
+                  color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+                  '&:hover': {
+                    backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.05)',
+                  }
+                }}
+              >
                 Cancel
               </Button>
-              <Button type="submit" variant="contained" color="primary">
+              <Button 
+                type="submit" 
+                variant="contained" 
+                sx={{
+                  backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                  color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+                  '&:hover': {
+                    backgroundColor: theme === 'dark' ? '#FFFFFF' : '#093057',
+                  },
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  transition: 'all 0.2s ease',
+                }}
+              >
                 Verify
               </Button>
             </Box>
@@ -200,13 +247,25 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
       fullWidth
       PaperProps={{
         sx: {
-          backgroundColor: theme === 'dark' ? '#424242' : '#fff',
-          color: theme === 'dark' ? '#fff' : '#000',
+          backgroundColor: theme === 'dark' ? '#2d2d2d' : '#FFFFFF',
+          color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+          borderRadius: '12px',
+          boxShadow: theme === 'dark' 
+            ? '0 8px 32px rgba(0, 0, 0, 0.4)'
+            : '0 8px 32px rgba(0, 0, 0, 0.1)',
+          border: theme === 'dark' ? '1px solid #444' : 'none',
         },
       }}
     >
-      <DialogTitle>Edit Post</DialogTitle>
-      <DialogContent>
+      <DialogTitle sx={{ 
+        fontWeight: 'bold',
+        color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+        borderBottom: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+        p: 3
+      }}>
+        Edit Post
+      </DialogTitle>
+      <DialogContent sx={{ p: 3 }}>
         <Box component="form" sx={{ mt: 2 }}>
           <TextField
             fullWidth
@@ -216,10 +275,21 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
             margin="normal"
             sx={{
               '& .MuiInputBase-input': {
-                color: theme === 'dark' ? '#fff' : '#000',
+                color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
               },
               '& .MuiInputLabel-root': {
-                color: theme === 'dark' ? '#fff' : '#000',
+                color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.3)' : 'rgba(13, 59, 102, 0.3)',
+                },
+                '&:hover fieldset': {
+                  borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                },
               },
             }}
           />
@@ -234,61 +304,151 @@ const EditPostForm = ({ post, open, onClose, theme }) => {
             InputLabelProps={{ shrink: true }}
             sx={{
               '& .MuiInputBase-input': {
-                color: theme === 'dark' ? '#fff' : '#000',
+                color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
               },
               '& .MuiInputLabel-root': {
-                color: theme === 'dark' ? '#fff' : '#000',
+                color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.3)' : 'rgba(13, 59, 102, 0.3)',
+                },
+                '&:hover fieldset': {
+                  borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                },
               },
             }}
           />
 
-          <ReactQuill
-            theme="snow"
-            value={content}
-            onChange={(value) => setContent(value)}
-            style={{
-              backgroundColor: '#fff',
-              color: theme === 'dark' ? '#000' : '#000',
-              border: theme === 'dark' ? '1px solid #6c757d' : '1px solid #ccc',
-              borderRadius: '4px',
-              minHeight: '150px',
-              padding: '10px',
-            }}
-          />
+          <Box sx={{ mt: 2, mb: 4 }}>
+            <ReactQuill
+              theme="snow"
+              value={content}
+              onChange={(value) => setContent(value)}
+              style={{
+                height: '200px',
+                marginBottom: '40px',
+              }}
+              className={theme === 'dark' ? 'dark-quill-editor' : ''}
+            />
+            {/* Custom CSS for dark mode styling of the rich text editor */}
+            {theme === 'dark' && (
+              <style jsx global>{`
+                .dark-quill-editor .ql-toolbar {
+                  background-color: #444;
+                  border-color: #555 !important;
+                  color: white;
+                }
+                .dark-quill-editor .ql-toolbar .ql-stroke {
+                  stroke: #93A8AC;
+                }
+                .dark-quill-editor .ql-toolbar .ql-fill {
+                  fill: #93A8AC;
+                }
+                .dark-quill-editor .ql-toolbar .ql-picker {
+                  color: #93A8AC;
+                }
+                .dark-quill-editor .ql-toolbar .ql-picker-options {
+                  background-color: #444;
+                }
+                .dark-quill-editor .ql-container {
+                  border-color: #555 !important;
+                  background-color: #333;
+                  color: white;
+                }
+                .dark-quill-editor .ql-editor.ql-blank::before {
+                  color: #93A8AC;
+                }
+              `}</style>
+            )}
+          </Box>
 
           {/* Toggle for Geotag */}
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ 
+            mt: 2,
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1,
+            borderTop: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+            paddingTop: 2
+          }}>
             <FormControlLabel
               control={
                 <Switch
                   checked={geotagEnabled}
                   onChange={handleGeotagToggle}
-                  color="primary"
+                  sx={{
+                    '& .MuiSwitch-switchBase': {
+                      '&.Mui-checked': {
+                        color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                        '& + .MuiSwitch-track': {
+                          backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.5)' : 'rgba(13, 59, 102, 0.5)',
+                        },
+                      },
+                    },
+                    '& .MuiSwitch-thumb': {
+                      backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                    },
+                    '& .MuiSwitch-track': {
+                      backgroundColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
+                    },
+                  }}
                 />
               }
-              label="Geotag?"
+              label="Geotag Location"
+              sx={{
+                color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+                '& .MuiFormControlLabel-label': {
+                  fontWeight: 500,
+                }
+              }}
             />
           </Box>
 
-                    {/* Show location selection only if geotagging is enabled */}
-                    {geotagEnabled && (
+          {/* Show location selection only if geotagging is enabled */}
+          {geotagEnabled && (
             <Box sx={{ mt: 2 }}>
-              <Typography variant="subtitle1">Update Location</Typography>
               <GeotagLocation
-  key={location ? `${location.lat}-${location.lng}` : 'no-location'}
-  initialPosition={location}
-  onLocationSelect={setLocation}
-/>
-
+                key={location ? `${location.lat}-${location.lng}` : 'no-location'}
+                initialPosition={location}
+                onLocationSelect={setLocation}
+              />
             </Box>
           )}
         </Box>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="secondary">
+      <DialogActions sx={{ 
+        p: 3,
+        borderTop: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+      }}>
+        <Button 
+          onClick={onClose} 
+          sx={{ 
+            color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+            '&:hover': {
+              backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.05)',
+            }
+          }}
+        >
           Cancel
         </Button>
-        <Button onClick={handleSubmit} variant="contained" color="primary">
+        <Button 
+          onClick={handleSubmit} 
+          variant="contained" 
+          sx={{
+            backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+            color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+            '&:hover': {
+              backgroundColor: theme === 'dark' ? '#FFFFFF' : '#093057',
+            },
+            fontWeight: 500,
+            borderRadius: '8px',
+            transition: 'all 0.2s ease',
+          }}
+        >
           Update
         </Button>
       </DialogActions>
