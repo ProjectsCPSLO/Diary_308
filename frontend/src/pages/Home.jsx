@@ -17,9 +17,6 @@ import {
 import { ThemeContext } from '../context/ThemeContext';
 import { useState } from 'react';
 
-// Add this import
-import { MapContainer, TileLayer } from 'react-leaflet';
-
 const Home = () => {
   const { posts, dispatch } = usePostsContext();
   const { user } = useAuthContext();
