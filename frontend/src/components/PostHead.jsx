@@ -27,7 +27,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
 import EditPostForm from './EditPostForm';
 
-// 1. Import Leaflet components & CSS
+// Import Leaflet components & CSS
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 // If you run into marker icon issues, also do the Leaflet icon fix:
@@ -43,7 +43,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-const PostHead = ({ post }) => {
+const PostHead = ({ post, mapTileUrl, mapTileAttribution, themeKey }) => {
   const { dispatch } = usePostsContext();
   const { user } = useAuthContext();
   const { theme } = useContext(ThemeContext);
@@ -58,11 +58,19 @@ const PostHead = ({ post }) => {
   });
   const [sharedWith, setSharedWith] = useState(post.sharedWith || []);
 
+  // Default map tile settings if not provided as props
+  const defaultTileUrl = theme === 'dark' 
+    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' 
+    : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  
+  const defaultTileAttribution = theme === 'dark'
+    ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    : '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
   const formatDateTime = (dateString) => {
     try {
       const date = new Date(dateString);
       
-
       if (isNaN(date.getTime())) {
         console.error("Invalid date:", dateString);
         return "Invalid date";
@@ -181,38 +189,45 @@ const PostHead = ({ post }) => {
     setEditDialogOpen(true);
   };
 
+  // Updated styles with the new color scheme
   const postStyle = {
-    backgroundColor: theme === 'dark' ? '#424242' : '#fff',
-    color: theme === 'dark' ? '#fff' : '#000',
+    backgroundColor: theme === 'dark' ? '#2d2d2d' : '#fff',
+    color: theme === 'dark' ? '#fff' : '#0D3B66',
     padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow:
-      theme === 'dark'
-        ? '0px 4px 6px rgba(0,0,0,0.5)'
-        : '0px 2px 4px rgba(0,0,0,0.1)',
-    border: theme === 'dark' ? '1px solid #616161' : '1px solid #e0e0e0',
-    transition: 'background-color 0.3s ease, color 0.3s ease',
+    borderRadius: '12px',
+    boxShadow: theme === 'dark' 
+      ? '0 4px 20px rgba(0,0,0,0.3)'
+      : '0 4px 20px rgba(0,0,0,0.08)',
+    border: 'none',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
     minHeight: '200px',
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      boxShadow: theme === 'dark' 
+        ? '0 10px 25px rgba(0,0,0,0.4)'
+        : '0 10px 25px rgba(0,0,0,0.1)',
+    }
   };
 
   const titleStyle = {
-    color: theme === 'dark' ? '#bbdefb' : '#1565c0',
+    color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
     textDecoration: 'none',
     fontWeight: 'bold',
     fontSize: '1.5rem',
     marginBottom: '0.5rem',
     width: '100%',
     textAlign: 'left',
+    transition: 'color 0.2s ease',
     '&:hover': {
-      color: theme === 'dark' ? '#90caf9' : '#1a73e8',
+      color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
     },
   };
 
   const dateStyle = {
-    color: theme === 'dark' ? '#e0e0e0' : '#757575',
+    color: theme === 'dark' ? '#aaa' : '#666',
     fontSize: '0.875rem',
     marginBottom: '1rem',
     textAlign: 'left',
@@ -220,7 +235,7 @@ const PostHead = ({ post }) => {
   };
 
   const contentStyle = {
-    color: theme === 'dark' ? '#f5f5f5' : '#212121',
+    color: theme === 'dark' ? '#f5f5f5' : '#333',
     fontSize: '1rem',
     overflow: 'hidden',
     display: '-webkit-box',
@@ -231,16 +246,18 @@ const PostHead = ({ post }) => {
     flex: 1,
     textAlign: 'left',
     width: '100%',
+    lineHeight: 1.5,
   };
 
   const moodStyle = {
-    color: theme === 'dark' ? '#e0e0e0' : '#757575',
+    color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
     fontSize: '0.875rem',
     display: 'flex',
     alignItems: 'center',
-    gap: '4px',
+    gap: '8px',
     width: '100%',
     justifyContent: 'flex-start',
+    marginBottom: '0.5rem',
   };
 
   return (
@@ -260,13 +277,14 @@ const PostHead = ({ post }) => {
               <IconButton
                 onClick={() => setShareDialogOpen(true)}
                 sx={{
-                  color: theme === 'dark' ? '#90caf9' : '#1976d2',
+                  color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
                   '&:hover': {
                     backgroundColor:
                       theme === 'dark'
-                        ? 'rgba(144, 202, 249, 0.2)'
-                        : 'rgba(25, 118, 210, 0.1)',
+                        ? 'rgba(147, 168, 172, 0.2)'
+                        : 'rgba(13, 59, 102, 0.1)',
                   },
+                  transition: 'all 0.2s ease',
                 }}
                 size="small"
               >
@@ -276,13 +294,14 @@ const PostHead = ({ post }) => {
               <IconButton
                 onClick={handleEditClick}
                 sx={{
-                  color: theme === 'dark' ? '#90caf9' : '#1976d2',
+                  color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
                   '&:hover': {
                     backgroundColor:
                       theme === 'dark'
-                        ? 'rgba(144, 202, 249, 0.2)'
-                        : 'rgba(25, 118, 210, 0.1)',
+                        ? 'rgba(147, 168, 172, 0.2)'
+                        : 'rgba(13, 59, 102, 0.1)',
                   },
+                  transition: 'all 0.2s ease',
                 }}
                 size="small"
               >
@@ -302,6 +321,7 @@ const PostHead = ({ post }) => {
                         ? 'rgba(229, 115, 115, 0.2)'
                         : 'rgba(211, 47, 47, 0.1)',
                   },
+                  transition: 'all 0.2s ease',
                 }}
                 size="small"
               >
@@ -315,7 +335,7 @@ const PostHead = ({ post }) => {
           </Typography>
 
           <Box sx={moodStyle}>
-            <MoodIcon fontSize="small" />
+            <MoodIcon fontSize="small" sx={{ color: theme === 'dark' ? '#93A8AC' : '#0D3B66' }} />
             <span>{post.mood}</span>
           </Box>
 
@@ -341,34 +361,49 @@ const PostHead = ({ post }) => {
                   key={index}
                   label={tag}
                   size="small"
-                  color="primary"
                   variant="outlined"
                   sx={{
-                    backgroundColor:
-                      theme === 'dark'
-                        ? 'rgba(144, 202, 249, 0.08)'
-                        : 'rgba(25, 118, 210, 0.08)',
+                    backgroundColor: theme === 'dark' 
+                      ? 'rgba(147, 168, 172, 0.1)' 
+                      : 'rgba(13, 59, 102, 0.1)',
+                    color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+                    borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                    '&:hover': {
+                      backgroundColor: theme === 'dark' 
+                        ? 'rgba(147, 168, 172, 0.2)' 
+                        : 'rgba(13, 59, 102, 0.2)',
+                    },
+                    transition: 'all 0.2s ease',
                   }}
                 />
               ))}
             </Box>
           )}
 
-            {/* 2. Embed a small map if there's a location */}
-            {post.location && (
-            <Box sx={{ width: '200px', height: '150px', mt: 2 }}>
+          {/* Embed a small map if there's a location */}
+          {post.location && (
+            <Box sx={{ 
+              width: '100%', 
+              height: '150px', 
+              mt: 2,
+              borderRadius: '8px',
+              overflow: 'hidden',
+              border: theme === 'dark' 
+                ? '1px solid rgba(147, 168, 172, 0.3)' 
+                : '1px solid rgba(13, 59, 102, 0.2)',
+            }}>
               <MapContainer
                 center={[post.location.lat, post.location.lng]}
                 zoom={13}
                 style={{ width: '100%', height: '100%' }}
                 scrollWheelZoom={false}
                 dragging={false}
+                zoomControl={false}
+                key={themeKey || theme} // Force remount when theme changes
               >
                 <TileLayer
-                  attribution='&copy; <a href="https://openstreetmap.org/copyright">
-                    OpenStreetMap
-                  </a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution={mapTileAttribution || defaultTileAttribution}
+                  url={mapTileUrl || defaultTileUrl}
                 />
                 <Marker position={[post.location.lat, post.location.lng]}>
                   <Popup>{post.title}</Popup>
@@ -376,9 +411,6 @@ const PostHead = ({ post }) => {
               </MapContainer>
             </Box>
           )}
-
-          
-
         </Stack>
       </ListItem>
 
@@ -389,7 +421,6 @@ const PostHead = ({ post }) => {
         theme={theme}
       />
 
-
       <Dialog
         open={shareDialogOpen}
         onClose={() => {
@@ -398,13 +429,19 @@ const PostHead = ({ post }) => {
         }}
         PaperProps={{
           sx: {
-            backgroundColor: theme === 'dark' ? '#424242' : '#fff',
-            color: theme === 'dark' ? '#fff' : '#000',
+            backgroundColor: theme === 'dark' ? '#2d2d2d' : '#FFFFFF',
+            color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+            borderRadius: '12px',
           },
         }}
       >
-        <DialogTitle>Share with Collaborators</DialogTitle>
-        <DialogContent>
+        <DialogTitle sx={{ 
+          borderBottom: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+          padding: '16px 24px',
+        }}>
+          Share with Collaborators
+        </DialogTitle>
+        <DialogContent sx={{ padding: '24px' }}>
           {collaborators.length > 0 ? (
             <List>
               {collaborators.map((collaborator) => (
@@ -430,9 +467,9 @@ const PostHead = ({ post }) => {
                       }
                     }}
                     sx={{
-                      color: theme === 'dark' ? '#90caf9' : '#1976d2',
+                      color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
                       '&.Mui-checked': {
-                        color: theme === 'dark' ? '#90caf9' : '#1976d2',
+                        color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
                       },
                       '&.Mui-disabled': {
                         color: theme === 'dark' ? '#666' : '#bbb',
@@ -443,12 +480,15 @@ const PostHead = ({ post }) => {
                     primary={collaborator.email}
                     secondary={
                       sharedWith.includes(collaborator._id)
-                        ? '(Already shared)'
+                        ? ''
                         : ''
                     }
                     sx={{
+                      '& .MuiListItemText-primary': {
+                        color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+                      },
                       '& .MuiListItemText-secondary': {
-                        color: theme === 'dark' ? '#aaa' : '#666',
+                        color: theme === 'dark' ? '#93A8AC' : '#666',
                       },
                     }}
                   />
@@ -456,16 +496,25 @@ const PostHead = ({ post }) => {
               ))}
             </List>
           ) : (
-            <Typography>
+            <Typography sx={{ color: theme === 'dark' ? '#FFFFFF' : '#0D3B66' }}>
               No collaborators yet. Add them in your profile.
             </Typography>
           )}
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ 
+          padding: '16px 24px', 
+          borderTop: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+        }}>
           <Button
             onClick={() => {
               setShareDialogOpen(false);
               setSelectedCollaborators([]);
+            }}
+            sx={{ 
+              color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+              '&:hover': {
+                backgroundColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(13, 59, 102, 0.05)',
+              },
             }}
           >
             Cancel
@@ -473,17 +522,25 @@ const PostHead = ({ post }) => {
           <Button
             onClick={handleShare}
             variant="contained"
-            color="primary"
             disabled={
               selectedCollaborators.length === 0 ||
               selectedCollaborators.every((id) => sharedWith.includes(id))
             }
+            sx={{
+              backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+              color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+              '&:hover': {
+                backgroundColor: theme === 'dark' ? '#FFFFFF' : '#093057',
+              },
+              '&.Mui-disabled': {
+                backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.3)' : 'rgba(13, 59, 102, 0.3)',
+              },
+            }}
           >
             Share
           </Button>
         </DialogActions>
       </Dialog>
-
 
       <Snackbar
         open={notification.open}
@@ -493,7 +550,28 @@ const PostHead = ({ post }) => {
         <Alert
           onClose={() => setNotification({ ...notification, open: false })}
           severity={notification.severity}
-          sx={{ width: '100%' }}
+          sx={{ 
+            width: '100%',
+            borderRadius: '8px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            backgroundColor: theme === 'dark' ? '#2d2d2d' : '#FFFFFF',
+            color: notification.severity === 'success' 
+              ? (theme === 'dark' ? '#81c784' : '#2e7d32')
+              : notification.severity === 'error'
+              ? (theme === 'dark' ? '#e57373' : '#d32f2f')
+              : notification.severity === 'info'
+              ? (theme === 'dark' ? '#93A8AC' : '#0D3B66')
+              : (theme === 'dark' ? '#ffb74d' : '#ed6c02'),
+            '& .MuiAlert-icon': {
+              color: notification.severity === 'success' 
+                ? (theme === 'dark' ? '#81c784' : '#2e7d32')
+                : notification.severity === 'error'
+                ? (theme === 'dark' ? '#e57373' : '#d32f2f')
+                : notification.severity === 'info'
+                ? (theme === 'dark' ? '#93A8AC' : '#0D3B66')
+                : (theme === 'dark' ? '#ffb74d' : '#ed6c02'),
+            }
+          }}
         >
           {notification.message}
         </Alert>

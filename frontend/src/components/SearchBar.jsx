@@ -23,7 +23,6 @@ const SearchBar = ({ onSearchResults }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
 
-  
   const handleSearch = useCallback(() => {
     if (!posts || searchTerm.trim() === '') {
       onSearchResults(null); 
@@ -71,16 +70,12 @@ const SearchBar = ({ onSearchResults }) => {
     onSearchResults(results);
   }, [posts, searchTerm, searchType, onSearchResults]);
 
-  
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
     
-    
     if (value.trim() !== '') {
-      
       setTimeout(() => {
-        
         if (value === e.target.value) {
           onSearchResults(
             posts?.filter(post => {
@@ -106,7 +101,6 @@ const SearchBar = ({ onSearchResults }) => {
         }
       }, 500);
     } else {
-      
       onSearchResults(null);
     }
   };
@@ -123,16 +117,13 @@ const SearchBar = ({ onSearchResults }) => {
     setSearchType(type);
     handleMenuClose();
     
-    
     if (searchTerm.trim() !== '') {
       handleSearch();
     }
   };
 
   const clearSearch = () => {
-    
     setSearchTerm('');
-    
     onSearchResults(null);
   };
 
@@ -157,22 +148,31 @@ const SearchBar = ({ onSearchResults }) => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon color={theme === 'dark' ? 'info' : 'primary'} />
+                <SearchIcon sx={{ color: theme === 'dark' ? '#93A8AC' : '#0D3B66' }} />
               </InputAdornment>
             ),
             endAdornment: searchTerm && (
               <InputAdornment position="end">
                 <IconButton size="small" onClick={clearSearch}>
-                  <CloseIcon fontSize="small" />
+                  <CloseIcon fontSize="small" sx={{ color: theme === 'dark' ? '#93A8AC' : '#0D3B66' }} />
                 </IconButton>
               </InputAdornment>
             ),
             sx: {
               borderRadius: 2,
               backgroundColor: theme === 'dark' ? '#3a3a3a' : '#f5f5f5',
-              color: theme === 'dark' ? '#fff' : '#000',
+              color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
               '&:hover': {
                 backgroundColor: theme === 'dark' ? '#4a4a4a' : '#e5e5e5',
+              },
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.3)' : 'rgba(13, 59, 102, 0.3)',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
               },
             }
           }}
@@ -181,13 +181,17 @@ const SearchBar = ({ onSearchResults }) => {
         <Button
           variant="outlined"
           onClick={handleMenuOpen}
-          startIcon={<FilterListIcon />}
+          startIcon={<FilterListIcon sx={{ color: theme === 'dark' ? '#93A8AC' : '#0D3B66' }} />}
           sx={{ 
             whiteSpace: 'nowrap',
             minWidth: 'auto',
             borderRadius: 2,
-            borderColor: theme === 'dark' ? '#90caf9' : '#1976d2',
-            color: theme === 'dark' ? '#90caf9' : '#1976d2',
+            borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+            color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+            '&:hover': {
+              backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.1)',
+              borderColor: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+            },
           }}
         >
           Filter
@@ -207,24 +211,64 @@ const SearchBar = ({ onSearchResults }) => {
           }}
           PaperProps={{
             sx: {
-              backgroundColor: theme === 'dark' ? '#424242' : '#fff',
-              color: theme === 'dark' ? '#fff' : '#000',
+              backgroundColor: theme === 'dark' ? '#2d2d2d' : '#FFFFFF',
+              color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+              border: theme === 'dark' ? '1px solid #444' : 'none',
+              boxShadow: theme === 'dark' 
+                ? '0 8px 32px rgba(0, 0, 0, 0.4)'
+                : '0 8px 32px rgba(0, 0, 0, 0.1)',
+              borderRadius: '8px',
             }
           }}
         >
-          <MenuItem onClick={() => handleSearchTypeChange('all')}>
+          <MenuItem onClick={() => handleSearchTypeChange('all')}
+            sx={{
+              color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+              '&:hover': {
+                backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.1)',
+              },
+            }}
+          >
             All Fields
           </MenuItem>
-          <MenuItem onClick={() => handleSearchTypeChange('title')}>
+          <MenuItem onClick={() => handleSearchTypeChange('title')}
+            sx={{
+              color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+              '&:hover': {
+                backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.1)',
+              },
+            }}
+          >
             Title Only
           </MenuItem>
-          <MenuItem onClick={() => handleSearchTypeChange('content')}>
+          <MenuItem onClick={() => handleSearchTypeChange('content')}
+            sx={{
+              color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+              '&:hover': {
+                backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.1)',
+              },
+            }}
+          >
             Content Only
           </MenuItem>
-          <MenuItem onClick={() => handleSearchTypeChange('tags')}>
+          <MenuItem onClick={() => handleSearchTypeChange('tags')}
+            sx={{
+              color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+              '&:hover': {
+                backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.1)',
+              },
+            }}
+          >
             Tags Only
           </MenuItem>
-          <MenuItem onClick={() => handleSearchTypeChange('date')}>
+          <MenuItem onClick={() => handleSearchTypeChange('date')}
+            sx={{
+              color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+              '&:hover': {
+                backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.1)',
+              },
+            }}
+          >
             Date Only
           </MenuItem>
         </Menu>
@@ -236,8 +280,17 @@ const SearchBar = ({ onSearchResults }) => {
             label={`Filtering by: ${searchType}`}
             size="small"
             onDelete={() => setSearchType('all')}
-            color="primary"
-            variant="outlined"
+            sx={{
+              backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.1)',
+              color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+              borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+              '& .MuiChip-deleteIcon': {
+                color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                '&:hover': {
+                  color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+                },
+              },
+            }}
           />
         </Box>
       )}

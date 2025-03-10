@@ -15,9 +15,14 @@ import {
   Alert,
   Card,
   CardContent,
+  CircularProgress,
+  Avatar,
 } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PersonIcon from '@mui/icons-material/Person';
+import GroupIcon from '@mui/icons-material/Group';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const Profile = () => {
   const { user } = useAuthContext();
@@ -123,123 +128,261 @@ const Profile = () => {
     }
   };
 
+  const getUserInitials = () => {
+    if (!user || !user.email) return '?';
+    return user.email.charAt(0).toUpperCase();
+  };
+
   if (isLoading) {
     return (
       <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
+        sx={{
+          position: 'fixed',
+          top: 0, // Change from fixed dimensions to cover full viewport
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: 9999, // Ensure it's above everything else
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: theme === 'dark' ? '#1c1c1c' : '#FFFFFF',
+        }}
       >
-        <Typography>Loading profile...</Typography>
+        <CircularProgress size={80} sx={{ 
+          color: theme === 'dark' ? '#93A8AC' : '#0D3B66' 
+        }} />
       </Box>
     );
   }
+
+  const cardStyle = {
+    backgroundColor: theme === 'dark' ? '#2d2d2d' : '#FFFFFF',
+    marginBottom: 3,
+    boxShadow: theme === 'dark' 
+      ? '0 8px 32px rgba(0, 0, 0, 0.4)'
+      : '0 8px 32px rgba(0, 0, 0, 0.1)',
+    borderRadius: '12px',
+    border: theme === 'dark' ? '1px solid #444' : 'none',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+    overflow: 'hidden',
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      boxShadow: theme === 'dark' 
+        ? '0 12px 40px rgba(0, 0, 0, 0.5)'
+        : '0 12px 40px rgba(0, 0, 0, 0.15)',
+    }
+  };
 
   return (
     <Box
       sx={{
         position: 'fixed',
-        top: 56,
+        top: 64, // Updated for new navbar height
         left: 0,
         right: 0,
         bottom: 0,
         backgroundColor: theme === 'dark' ? '#1c1c1c' : '#f5f5f5',
-        color: theme === 'dark' ? 'white' : 'black',
+        color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
         overflowY: 'auto',
         padding: '2rem',
+        transition: 'background-color 0.3s ease',
+        '&::-webkit-scrollbar': {
+          width: '8px',
+        },
+        '&::-webkit-scrollbar-track': {
+          background: theme === 'dark' ? '#2d2d2d' : '#f1f1f1',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+          borderRadius: '4px',
+        },
       }}
     >
       <Container maxWidth="md">
         {/* Profile Info Card */}
-        <Card
-          sx={{
-            backgroundColor: theme === 'dark' ? '#424242' : 'white',
-            marginBottom: 3,
-            boxShadow:
-              theme === 'dark' ? '0 4px 6px rgba(0, 0, 0, 0.4)' : undefined,
-          }}
-        >
-          <CardContent>
+        <Card sx={cardStyle}>
+          <CardContent sx={{ p: 3 }}>
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: 2,
-                marginBottom: 2,
+                mb: 3,
+                borderBottom: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+                pb: 2,
+              }}
+            >
+              <Avatar
+                sx={{
+                  width: 56,
+                  height: 56,
+                  bgcolor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                  color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold'
+                }}
+              >
+                {getUserInitials()}
+              </Avatar>
+              <Typography 
+                variant="h4" 
+                sx={{ 
+                  fontWeight: 'bold',
+                  color: theme === 'dark' ? '#FFFFFF' : '#0D3B66'
+                }}
+              >
+                Profile
+              </Typography>
+            </Box>
+            <Box 
+              sx={{ 
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2 
               }}
             >
               <PersonIcon
                 sx={{
-                  fontSize: 40,
-                  color: theme === 'dark' ? '#90caf9' : '#1976d2',
+                  fontSize: 24,
+                  color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
                 }}
               />
-              <Typography variant="h4" gutterBottom>
-                Profile
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  fontWeight: 500,
+                  color: theme === 'dark' ? '#FFFFFF' : '#0D3B66'
+                }}
+              >
+                {user?.email}
               </Typography>
             </Box>
-            <Typography variant="h6" gutterBottom>
-              Email: {user?.email}
-            </Typography>
           </CardContent>
         </Card>
 
         {/* Collaboration Code Card */}
-        <Card
-          sx={{
-            backgroundColor: theme === 'dark' ? '#424242' : 'white',
-            marginBottom: 3,
-            boxShadow:
-              theme === 'dark' ? '0 4px 6px rgba(0, 0, 0, 0.4)' : undefined,
-          }}
-        >
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Your Collaboration Code
-            </Typography>
+        <Card sx={cardStyle}>
+          <CardContent sx={{ p: 3 }}>
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: 2,
-                marginBottom: 2,
+                mb: 3,
+                borderBottom: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+                pb: 2,
               }}
             >
-              <Typography variant="h5" sx={{ fontFamily: 'monospace' }}>
+              <VpnKeyIcon 
+                sx={{ 
+                  fontSize: 28,
+                  color: theme === 'dark' ? '#93A8AC' : '#0D3B66' 
+                }} 
+              />
+              <Typography 
+                variant="h5" 
+                sx={{ 
+                  fontWeight: 'bold',
+                  color: theme === 'dark' ? '#FFFFFF' : '#0D3B66'
+                }}
+              >
+                Your Collaboration Code
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: 2,
+                mb: 2,
+                backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.05)',
+                p: 2,
+                borderRadius: 2,
+                border: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+              }}
+            >
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  fontFamily: 'monospace',
+                  letterSpacing: 1,
+                  fontWeight: 'bold',
+                  color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+                  flexGrow: 1
+                }}
+              >
                 {profileData?.collaborationCode || 'Loading...'}
               </Typography>
               <Button
                 startIcon={<ContentCopyIcon />}
                 onClick={handleCopyCode}
                 variant="contained"
-                color="primary"
+                sx={{
+                  backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                  color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+                  '&:hover': {
+                    backgroundColor: theme === 'dark' ? '#FFFFFF' : '#093057',
+                  },
+                  transition: 'all 0.2s ease',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                }}
               >
                 Copy Code
               </Button>
             </Box>
+            <Typography 
+              variant="body2"
+              sx={{ 
+                color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(13, 59, 102, 0.7)',
+                fontStyle: 'italic'
+              }}
+            >
+              Share this code with others to let them add you as a collaborator
+            </Typography>
           </CardContent>
         </Card>
 
         {/* Add Collaborator Card */}
-        <Card
-          sx={{
-            backgroundColor: theme === 'dark' ? '#424242' : 'white',
-            marginBottom: 3,
-            boxShadow:
-              theme === 'dark' ? '0 4px 6px rgba(0, 0, 0, 0.4)' : undefined,
-          }}
-        >
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Add Collaborator
-            </Typography>
+        <Card sx={cardStyle}>
+          <CardContent sx={{ p: 3 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+                mb: 3,
+                borderBottom: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+                pb: 2,
+              }}
+            >
+              <PersonAddIcon 
+                sx={{ 
+                  fontSize: 28,
+                  color: theme === 'dark' ? '#93A8AC' : '#0D3B66' 
+                }} 
+              />
+              <Typography 
+                variant="h5" 
+                sx={{ 
+                  fontWeight: 'bold',
+                  color: theme === 'dark' ? '#FFFFFF' : '#0D3B66'
+                }}
+              >
+                Add Collaborator
+              </Typography>
+            </Box>
             <Box
               sx={{
                 display: 'flex',
                 gap: 2,
                 alignItems: 'center',
-                marginBottom: 2,
+                mb: 2,
+                flexWrap: { xs: 'wrap', sm: 'nowrap' }
               }}
             >
               <TextField
@@ -247,64 +390,148 @@ const Profile = () => {
                 onChange={(e) => setCollaboratorCode(e.target.value)}
                 label="Enter Collaboration Code"
                 variant="outlined"
-                size="small"
                 fullWidth
-                sx={{
-                  backgroundColor: theme === 'dark' ? '#616161' : 'white',
-                  '& .MuiInputBase-input': {
-                    color: theme === 'dark' ? 'white' : 'black',
+                InputProps={{
+                  style: {
+                    color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
                   },
-                  '& .MuiInputLabel-root': {
-                    color: theme === 'dark' ? '#e0e0e0' : 'inherit',
+                }}
+                InputLabelProps={{
+                  style: { color: theme === 'dark' ? '#93A8AC' : '#0D3B66' },
+                }}
+                sx={{
+                  flexGrow: 1,
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.3)' : 'rgba(13, 59, 102, 0.3)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                    },
                   },
                 }}
               />
               <Button
                 variant="contained"
                 onClick={handleAddCollaborator}
-                sx={{ minWidth: '120px' }}
+                sx={{ 
+                  minWidth: '120px',
+                  backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                  color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+                  '&:hover': {
+                    backgroundColor: theme === 'dark' ? '#FFFFFF' : '#093057',
+                  },
+                  transition: 'all 0.2s ease',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  py: 1.5,
+                  width: { xs: '100%', sm: 'auto' }
+                }}
               >
                 Add
               </Button>
             </Box>
+            <Typography 
+              variant="body2"
+              sx={{ 
+                color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(13, 59, 102, 0.7)',
+                fontStyle: 'italic'
+              }}
+            >
+              Enter a friend's collaboration code to add them as a collaborator
+            </Typography>
           </CardContent>
         </Card>
 
         {/* Collaborators List Card */}
-        <Card
-          sx={{
-            backgroundColor: theme === 'dark' ? '#424242' : 'white',
-            boxShadow:
-              theme === 'dark' ? '0 4px 6px rgba(0, 0, 0, 0.4)' : undefined,
-          }}
-        >
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Your Collaborators
-            </Typography>
-            <List>
-              {collaborators.length > 0 ? (
-                collaborators.map((collaborator, index) => (
+        <Card sx={cardStyle}>
+          <CardContent sx={{ p: 3 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+                mb: 3,
+                borderBottom: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+                pb: 2,
+              }}
+            >
+              <GroupIcon 
+                sx={{ 
+                  fontSize: 28,
+                  color: theme === 'dark' ? '#93A8AC' : '#0D3B66' 
+                }} 
+              />
+              <Typography 
+                variant="h5" 
+                sx={{ 
+                  fontWeight: 'bold',
+                  color: theme === 'dark' ? '#FFFFFF' : '#0D3B66'
+                }}
+              >
+                Your Collaborators
+              </Typography>
+            </Box>
+            {collaborators.length > 0 ? (
+              <List sx={{ p: 0 }}>
+                {collaborators.map((collaborator, index) => (
                   <React.Fragment key={collaborator._id || index}>
-                    <ListItem>
+                    <ListItem sx={{ px: 0 }}>
+                      <Avatar
+                        sx={{
+                          width: 36,
+                          height: 36,
+                          bgcolor: theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)',
+                          color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                          fontSize: '0.9rem',
+                          mr: 2
+                        }}
+                      >
+                        {collaborator.email.charAt(0).toUpperCase()}
+                      </Avatar>
                       <ListItemText
                         primary={collaborator.email}
                         sx={{
                           '& .MuiListItemText-primary': {
-                            color: theme === 'dark' ? 'white' : 'black',
+                            color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+                            fontWeight: 500
                           },
                         }}
                       />
                     </ListItem>
-                    {index < collaborators.length - 1 && <Divider />}
+                    {index < collaborators.length - 1 && (
+                      <Divider 
+                        sx={{ 
+                          borderColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'
+                        }} 
+                      />
+                    )}
                   </React.Fragment>
-                ))
-              ) : (
-                <Typography color="text.secondary">
-                  No collaborators yet
+                ))}
+              </List>
+            ) : (
+              <Box 
+                sx={{ 
+                  backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.05)',
+                  p: 3,
+                  borderRadius: 2,
+                  textAlign: 'center',
+                  border: `1px dashed ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+                }}
+              >
+                <Typography 
+                  sx={{ 
+                    color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(13, 59, 102, 0.7)',
+                    fontStyle: 'italic'
+                  }}
+                >
+                  No collaborators yet. Add them using their collaboration codes.
                 </Typography>
-              )}
-            </List>
+              </Box>
+            )}
           </CardContent>
         </Card>
       </Container>
@@ -313,11 +540,29 @@ const Profile = () => {
         open={notification.open}
         autoHideDuration={6000}
         onClose={() => setNotification({ ...notification, open: false })}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert
           onClose={() => setNotification({ ...notification, open: false })}
           severity={notification.severity}
-          sx={{ width: '100%' }}
+          variant="filled"
+          sx={{ 
+            width: '100%',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
+            borderRadius: '8px',
+            backgroundColor: 
+              notification.severity === 'success' 
+                ? (theme === 'dark' ? '#93A8AC' : '#0D3B66')
+                : notification.severity === 'error'
+                ? '#d32f2f'
+                : notification.severity === 'warning'
+                ? '#ed6c02'
+                : '#0288d1',
+            color: 
+              notification.severity === 'success' && theme === 'dark'
+                ? '#0D3B66'
+                : '#fff',
+          }}
         >
           {notification.message}
         </Alert>
