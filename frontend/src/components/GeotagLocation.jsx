@@ -1,5 +1,4 @@
-// frontend/src/components/GeotagLocation.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -11,6 +10,7 @@ import {
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { ThemeContext } from '../context/ThemeContext';
 
 // Material UI imports
 import { TextField, Button, Box } from '@mui/material';
@@ -53,6 +53,7 @@ function SearchHandler({ coords }) {
 }
 
 const GeotagLocation = ({ onLocationSelect, initialPosition = null }) => {
+  const { theme } = useContext(ThemeContext);
   const [position, setPosition] = useState(initialPosition);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -129,6 +130,15 @@ const GeotagLocation = ({ onLocationSelect, initialPosition = null }) => {
     setPosition(initialPosition);
   }, [initialPosition]);
 
+  // Dark mode map styles
+  const getDarkModeMapUrl = () => {
+    return 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+  };
+
+  const getLightModeMapUrl = () => {
+    return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  };
+
   return (
     <Box>
       {/* Search row: text field + Search button */}
@@ -140,16 +150,59 @@ const GeotagLocation = ({ onLocationSelect, initialPosition = null }) => {
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={handleSearchKeyDown}
           fullWidth
+          InputProps={{
+            style: {
+              color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+            },
+          }}
+          InputLabelProps={{
+            style: { color: theme === 'dark' ? '#93A8AC' : '#0D3B66' },
+          }}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.3)' : 'rgba(13, 59, 102, 0.3)',
+              },
+              '&:hover fieldset': {
+                borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+              },
+            },
+          }}
         />
-        <Button variant="contained" onClick={handleSearch}>
-          Search
+        <Button 
+          variant="contained" 
+          onClick={handleSearch}
+          sx={{
+            backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+            color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+            '&:hover': {
+              backgroundColor: theme === 'dark' ? '#FFFFFF' : '#093057',
+            },
+            transition: 'all 0.2s ease',
+          }}
+        >
+          SEARCH
         </Button>
       </Box>
 
       {/* Reset Map button */}
       <Box mb={1}>
-        <Button variant="outlined" color="primary" onClick={resetMap}>
-          Reset Map
+        <Button 
+          variant="outlined" 
+          onClick={resetMap}
+          sx={{
+            color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+            borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+            '&:hover': {
+              backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.1)',
+              borderColor: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+            },
+          }}
+        >
+          RESET MAP
         </Button>
       </Box>
 
@@ -161,13 +214,19 @@ const GeotagLocation = ({ onLocationSelect, initialPosition = null }) => {
             : [37.7749, -122.4194] // Fallback if no location is set.
         }
         zoom={13}
-        style={{ height: '400px', width: '100%' }}
+        style={{ 
+          height: '400px', 
+          width: '100%',
+          borderRadius: '8px',
+          border: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.3)' : 'rgba(13, 59, 102, 0.3)'}`, 
+        }}
       >
         <TileLayer
-          attribution='&copy; <a href="https://openstreetmap.org/copyright">
-            OpenStreetMap
-          </a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution={theme === 'dark' 
+            ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            : '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }
+          url={theme === 'dark' ? getDarkModeMapUrl() : getLightModeMapUrl()}
         />
         <LocationMarker
           position={position}

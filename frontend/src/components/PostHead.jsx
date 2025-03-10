@@ -43,7 +43,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-const PostHead = ({ post }) => {
+const PostHead = ({ post, mapTileUrl, mapTileAttribution, themeKey }) => {
   const { dispatch } = usePostsContext();
   const { user } = useAuthContext();
   const { theme } = useContext(ThemeContext);
@@ -57,6 +57,15 @@ const PostHead = ({ post }) => {
     severity: 'success',
   });
   const [sharedWith, setSharedWith] = useState(post.sharedWith || []);
+
+  // Default map tile settings if not provided as props
+  const defaultTileUrl = theme === 'dark' 
+    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' 
+    : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  
+  const defaultTileAttribution = theme === 'dark'
+    ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    : '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
   const formatDateTime = (dateString) => {
     try {
@@ -85,7 +94,7 @@ const PostHead = ({ post }) => {
     const fetchCollaborators = async () => {
       try {
         const response = await fetch(
-          'http://localhost:4000/api/user/collaborators',
+          'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/user/collaborators',
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -106,7 +115,7 @@ const PostHead = ({ post }) => {
 
   const handleClick = async () => {
     const response = await fetch(
-      `http://localhost:4000/api/posts/${post._id}`,
+      `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${post._id}`,
       {
         method: 'DELETE',
         headers: {
@@ -141,7 +150,7 @@ const PostHead = ({ post }) => {
       }
 
       const response = await fetch(
-        `http://localhost:4000/api/posts/${post._id}/share`,
+        `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${post._id}/share`,
         {
           method: 'POST',
           headers: {
@@ -390,12 +399,11 @@ const PostHead = ({ post }) => {
                 scrollWheelZoom={false}
                 dragging={false}
                 zoomControl={false}
+                key={themeKey || theme} // Force remount when theme changes
               >
                 <TileLayer
-                  attribution='&copy; <a href="https://openstreetmap.org/copyright">
-                    OpenStreetMap
-                  </a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution={mapTileAttribution || defaultTileAttribution}
+                  url={mapTileUrl || defaultTileUrl}
                 />
                 <Marker position={[post.location.lat, post.location.lng]}>
                   <Popup>{post.title}</Popup>
@@ -472,7 +480,7 @@ const PostHead = ({ post }) => {
                     primary={collaborator.email}
                     secondary={
                       sharedWith.includes(collaborator._id)
-                        ? '(Already shared)'
+                        ? ''
                         : ''
                     }
                     sx={{

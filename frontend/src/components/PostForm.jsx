@@ -178,24 +178,14 @@ const PostForm = () => {
             border: theme === 'dark' ? '1px solid #444' : 'none',
           }}
         >
-          {/* "Need inspiration?" button with proper styling */}
-          <Button
-            onClick={() => handlePromptSelect("What made you smile today?")}
-            variant="outlined"
-            sx={{
-              width: 'fit-content',
-              color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
-              borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
-              '&:hover': {
-                borderColor: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
-                backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.05)',
-              },
-              textTransform: 'none',
-              fontSize: '1rem',
+          <WritingPrompts 
+            onSelectPrompt={handlePromptSelect} 
+            customColors={{
+              buttonColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+              textColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+              hoverBg: theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.05)',
             }}
-          >
-            ✨ Need inspiration?
-          </Button>
+          />
   
           {currentPrompt && (
             <Alert
@@ -277,7 +267,6 @@ const PostForm = () => {
             }}
           />
   
-          {/* Fixed rich text editor with dark mode styling and proper sizing */}
           <Box sx={{ minHeight: '250px', mb: 4 }}>
             <ReactQuill
               theme="snow"
@@ -388,8 +377,7 @@ const PostForm = () => {
             }}
           />
   
-          {/* Fixed Add Tags styling */}
-          <Box sx={{ 
+                    <Box sx={{ 
             mb: 2,
             '& .MuiTextField-root': {
               '& .MuiOutlinedInput-root': {
@@ -421,8 +409,14 @@ const PostForm = () => {
             <TagsInput tags={tags} setTags={setTags} theme={theme} />
           </Box>
   
-          {/* Toggle for Geotag */}
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 1,
+            borderTop: `1px solid ${theme === 'dark' ? 'rgba(147, 168, 172, 0.2)' : 'rgba(13, 59, 102, 0.1)'}`,
+            paddingTop: 2,
+            mb: 1 // Add a small margin bottom to reduce gap
+          }}>
             <FormControlLabel
               control={
                 <Switch
@@ -446,62 +440,28 @@ const PostForm = () => {
                   }}
                 />
               }
-              label="Geotag?"
+              label="Geotag Location"
               sx={{
                 color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+                '& .MuiFormControlLabel-label': {
+                  fontWeight: 500,
+                }
               }}
             />
           </Box>
-
           {/* Only render GeotagLocation if geotag is enabled */}
           {geotagEnabled && (
-            <Box sx={{ mt: 2 }}>
-              <Typography 
-                variant="subtitle1" 
-                sx={{ 
-                  color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
-                  fontWeight: 500,
-                  mb: 1
-                }}
-              >
-                Select Location
-              </Typography>
-              <GeotagLocation onLocationSelect={setLocation} />
-              
-              {/* Add custom styling for GeotagLocation */}
-              <style jsx global>{`
-                /* Search location styling */
-                input[placeholder="Search location..."] {
-                  background-color: ${theme === 'dark' ? '#3a3a3a' : '#f5f5f5'};
-                  color: ${theme === 'dark' ? '#FFFFFF' : '#0D3B66'};
-                  border: 1px solid ${theme === 'dark' ? '#555' : 'rgba(13, 59, 102, 0.3)'};
-                  border-radius: 4px;
-                  padding: 8px 12px;
-                }
-                
-                /* Search button */
-                .leaflet-container + div button:first-of-type,
-                button.MuiButton-contained {
-                  background-color: ${theme === 'dark' ? '#93A8AC' : '#0D3B66'};
-                  color: ${theme === 'dark' ? '#0D3B66' : '#FFFFFF'};
-                }
-                
-                .leaflet-container + div button:first-of-type:hover,
-                button.MuiButton-contained:hover {
-                  background-color: ${theme === 'dark' ? '#FFFFFF' : '#093057'};
-                }
-                
-                /* Reset map button */
-                button.MuiButton-outlined {
-                  border-color: ${theme === 'dark' ? '#93A8AC' : '#0D3B66'};
-                  color: ${theme === 'dark' ? '#93A8AC' : '#0D3B66'};
-                }
-                
-                button.MuiButton-outlined:hover {
-                  background-color: ${theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.05)'};
-                  border-color: ${theme === 'dark' ? '#FFFFFF' : '#0D3B66'};
-                }
-              `}</style>
+            <Box sx={{ 
+              mb: 2, // Add margin bottom to reduce gap
+              '& > div': { // Target the direct child div of the GeotagLocation component
+                gap: 1,
+              }
+            }}>
+              <GeotagLocation 
+                onLocationSelect={setLocation} 
+                initialPosition={location}
+                theme={theme} // Pass theme to allow styling customization
+              />
             </Box>
           )}
 

@@ -17,6 +17,9 @@ import {
 import { ThemeContext } from '../context/ThemeContext';
 import { useState } from 'react';
 
+// Add this import
+import { MapContainer, TileLayer } from 'react-leaflet';
+
 const Home = () => {
   const { posts, dispatch } = usePostsContext();
   const { user } = useAuthContext();
@@ -25,9 +28,19 @@ const Home = () => {
   const [isTagFilterActive, setIsTagFilterActive] = useState(false);
   const [searchResults, setSearchResults] = useState(null);
 
+  // Add this section to define map tile variables
+  // This will be passed to the PostHead component
+  const tileLayerUrl = theme === 'dark' 
+    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' 
+    : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  
+  const tileLayerAttribution = theme === 'dark'
+    ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    : '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch('http://localhost:4000/api/posts', {
+      const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts', {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -90,19 +103,21 @@ const Home = () => {
     return (
       <Box
         sx={{
-          width: '200px',
-          height: '200px',
           position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          top: 0, // Change from fixed dimensions to cover full viewport
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: 9999, // Ensure it's above everything else
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           backgroundColor: theme === 'dark' ? '#1c1c1c' : '#FFFFFF',
         }}
       >
-        <CircularProgress size={100} sx={{ 
+        <CircularProgress size={80} sx={{ 
           color: theme === 'dark' ? '#93A8AC' : '#0D3B66' 
         }} />
       </Box>
@@ -166,7 +181,7 @@ const Home = () => {
                   gap: 2,
                   flexWrap: 'wrap',
                 }}
-              >
+              >                  
                 <Button
                   onClick={toggleFilter}
                   variant="outlined"
@@ -181,17 +196,26 @@ const Home = () => {
                     color: isTagFilterActive 
                       ? (theme === 'dark' ? '#0D3B66' : '#FFFFFF') 
                       : (theme === 'dark' ? '#FFFFFF' : '#0D3B66'),
-                    borderColor: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+                    borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
                     '&:hover': {
                       backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
                       color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
                       borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
                     },
-                    borderRadius: '4px',
                     transition: 'all 0.2s ease',
+                    borderRadius: '8px',
+                    fontWeight: 500,
+                    padding: '0 12px',
+                    minWidth: '100px'
                   }}
                 >
-                  <span style={{ fontSize: '0.875rem' }}>
+                  <span style={{ 
+                    fontSize: '0.875rem',
+                    position: 'relative',
+                    zIndex: 1,
+                    textTransform: 'none',
+                    fontWeight: 'medium'
+                   }}>
                     {isTagFilterActive ? 'Filters On' : 'Filters Off'}
                   </span>
                 </Button>
@@ -212,13 +236,14 @@ const Home = () => {
                       onClick={() => handleTagClick(tag)}
                       sx={{
                         backgroundColor: selectedTags.includes(tag) 
-                          ? (theme === 'dark' ? '#93A8AC' : '#0D3B66') 
-                          : (theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(13,59,102,0.1)'),
+                          ? (theme === 'dark' ? '#93A8AC' : '#0D3B66')
+                          : (theme === 'dark' ? 'rgba(147, 168, 172, 0.1)' : 'rgba(13, 59, 102, 0.1)'),
                         color: selectedTags.includes(tag) 
-                          ? (theme === 'dark' ? '#0D3B66' : '#FFFFFF') 
+                          ? (theme === 'dark' ? '#0D3B66' : '#FFFFFF')
                           : (theme === 'dark' ? '#FFFFFF' : '#0D3B66'),
+                        borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
                         '&:hover': {
-                          backgroundColor: theme === 'dark' ? 'rgba(147,168,172,0.8)' : 'rgba(13,59,102,0.8)',
+                          backgroundColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.8)' : 'rgba(13, 59, 102, 0.8)',
                           color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
                         },
                         transition: 'all 0.2s ease',
@@ -285,7 +310,13 @@ const Home = () => {
               <Grid container spacing={2}>
                 {filteredPosts?.map((post) => (
                   <Grid item xs={12} sm={6} key={post._id}>
-                    <PostHead post={post} />
+                    {/* Pass the map tile props to PostHead */}
+                    <PostHead 
+                      post={post} 
+                      mapTileUrl={tileLayerUrl} 
+                      mapTileAttribution={tileLayerAttribution}
+                      themeKey={theme} // Used to force remount when theme changes
+                    />
                   </Grid>
                 ))}
               </Grid>

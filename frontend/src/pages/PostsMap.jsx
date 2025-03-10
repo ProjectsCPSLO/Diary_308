@@ -1,7 +1,6 @@
-// frontend/src/pages/PostsMap.jsx
 import React, { useEffect, useState, useContext } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { ThemeContext } from '../context/ThemeContext';
@@ -12,10 +11,19 @@ const PostsMap = () => {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
 
+  // Select appropriate map tile layer based on theme
+  const tileLayerUrl = theme === 'dark' 
+    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' 
+    : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  
+  const tileLayerAttribution = theme === 'dark'
+    ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    : '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
   useEffect(() => {
     const fetchPosts = async () => {
       try { 
-        const response = await fetch('http://localhost:4000/api/posts', {
+        const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts', {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -39,26 +47,36 @@ const PostsMap = () => {
   return (
     <Box
       sx={{
-        // Make the entire page fill the viewport
-        position: 'fixed',
-        top: 60, // If your navbar is 60px tall
+        // Ensure full viewport coverage with no gaps
+        position: 'absolute',
+        top: 0,
         left: 0,
-        width: '100vw',
-        height: 'calc(100vh - 60px)', // subtract navbar height
+        width: '100%',
+        height: '100%',
         backgroundColor: theme === 'dark' ? '#1c1c1c' : '#ffffff',
         transition: 'background-color 0.3s ease',
+        '& .leaflet-container': {
+          width: '100%',
+          height: '100%',
+        },
+        '& .leaflet-control-container': {
+          position: 'absolute',
+          zIndex: 1000,
+        },
+        '& .leaflet-top': {
+          top: '64px', // Adjust to match navbar height if needed
+        },
       }}
     >
       <MapContainer
         center={[20, 0]} // roughly the center of the world
         zoom={2}
         style={{ height: '100%', width: '100%' }}
+        key={theme} // Force remount when theme changes
       >
         <TileLayer
-          attribution='&copy; <a href="https://openstreetmap.org/copyright">
-            OpenStreetMap
-          </a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution={tileLayerAttribution}
+          url={tileLayerUrl}
         />
         {posts.map(post => (
           <Marker
@@ -69,14 +87,43 @@ const PostsMap = () => {
             }}
           >
             <Popup>
-              <Typography variant="subtitle1">{post.title}</Typography>
-              <Typography
-                variant="body2"
-                onClick={() => navigate(`/api/posts/${post._id}`)}
-                sx={{ cursor: 'pointer', textDecoration: 'underline' }}
-              >
-                View Post
-              </Typography>
+              <Box sx={{ 
+                p: 1,
+                backgroundColor: theme === 'dark' ? '#2d2d2d' : '#FFFFFF',
+                color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+              }}>
+                <Typography 
+                  variant="subtitle1"
+                  sx={{ 
+                    fontWeight: 'bold',
+                    color: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                    mb: 1
+                  }}
+                >
+                  {post.title}
+                </Typography>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => navigate(`/api/posts/${post._id}`)}
+                  sx={{ 
+                    cursor: 'pointer',
+                    borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                    color: theme === 'dark' ? '#FFFFFF' : '#0D3B66',
+                    '&:hover': {
+                      backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                      color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+                      borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                    },
+                    fontWeight: 500,
+                    fontSize: '0.75rem',
+                    p: '2px 8px',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  View Post
+                </Button>
+              </Box>
             </Popup>
           </Marker>
         ))}

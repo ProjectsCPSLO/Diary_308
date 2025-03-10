@@ -110,7 +110,7 @@ const writingPrompts = [
   "What's a gift you gave or received today (tangible or intangible)?",
 ];
 
-const WritingPrompts = ({ onSelectPrompt }) => {
+const WritingPrompts = ({ onSelectPrompt, customColors }) => {
   const getRandomPrompt = () => {
     const randomIndex = Math.floor(Math.random() * writingPrompts.length);
     return writingPrompts[randomIndex];
@@ -121,6 +121,13 @@ const WritingPrompts = ({ onSelectPrompt }) => {
     onSelectPrompt(prompt);
   };
 
+
+  const colors = customColors || {
+    buttonColor: '#1976d2',
+    textColor: '#1976d2',
+    hoverBg: 'rgba(25, 118, 210, 0.04)',
+  };
+
   return (
     <Button
       onClick={handleGetPrompt}
@@ -128,11 +135,11 @@ const WritingPrompts = ({ onSelectPrompt }) => {
       startIcon={<AutoAwesomeIcon />}
       sx={{
         width: 'fit-content',
-        color: '#1976d2',
-        borderColor: '#1976d2',
+        color: colors.buttonColor,
+        borderColor: colors.buttonColor,
         '&:hover': {
-          borderColor: '#1565c0',
-          backgroundColor: 'rgba(25, 118, 210, 0.04)',
+          borderColor: colors.buttonColor,
+          backgroundColor: colors.hoverBg,
         },
         textTransform: 'none',
         fontSize: '1rem',
