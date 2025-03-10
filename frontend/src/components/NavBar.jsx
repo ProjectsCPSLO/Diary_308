@@ -16,12 +16,20 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Drawer from '@mui/material/Drawer';
 import SearchBar from './SearchBar';
 import CloseIcon from '@mui/icons-material/Close';
+import MenuIcon from '@mui/icons-material/Menu';
+import Tooltip from '@mui/material/Tooltip';
+import Avatar from '@mui/material/Avatar';
+import HomeIcon from '@mui/icons-material/Home';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PersonIcon from '@mui/icons-material/Person';
+import MapIcon from '@mui/icons-material/Map';
 
 const NavBar = () => {
   const { user } = useAuthContext();
   const { logout } = useLogout();
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width:768px)');
 
   const handleClick = () => logout();
@@ -30,15 +38,28 @@ const NavBar = () => {
     setSearchOpen(!searchOpen);
   };
 
+  const toggleMobileMenu = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  // Get user initials for avatar
+  const getUserInitials = () => {
+    if (!user || !user.email) return '?';
+    return user.email.charAt(0).toUpperCase();
+  };
+
   return (
     <>
       <AppBar
-        position="static"
+        position="fixed"
+        elevation={0}
         sx={{
-          backgroundColor: '#1976d2',
-          height: '56px',
+          backgroundColor: theme === 'dark' ? '#1e1e1e' : '#FFFFFF',
+          borderBottom: `1px solid ${theme === 'dark' ? '#333' : '#93A8AC'}`,
+          height: '64px',
           display: 'flex',
           justifyContent: 'center',
+          color: theme === 'dark' ? '#fff' : '#0D3B66',
         }}
       >
         <Container maxWidth="lg">
@@ -51,141 +72,183 @@ const NavBar = () => {
               padding: '0 10px',
             }}
           >
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{
-                  fontSize: '1rem',
-                }}
+            {/* Mobile menu button */}
+            {isMobile && (
+              <IconButton
+                edge="start"
+                aria-label="menu"
+                onClick={toggleMobileMenu}
+                sx={{ mr: 1 }}
               >
-                <Link
-                  to="/"
-                  style={{
-                    color: 'white',
-                    textDecoration: 'none',
-                  }}
-                >
-                  Home
-                </Link>
-              </Typography>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{
-                  fontSize: '1rem',
-                  marginLeft: '20px',
-                }}
-              >
-                <Link
-                  to="/calendar"
-                  style={{
-                    color: 'white',
-                    textDecoration: 'none',
-                  }}
-                >
-                  Calendar
-                </Link>
-              </Typography>
-              {user && (
-                <Typography
-                  variant="h6"
-                  component="div"
-                  sx={{
-                    fontSize: '1rem',
-                    marginLeft: '20px',
-                  }}
-                >
-                  <Link
-                    to="/profile"
-                    style={{
-                      color: 'white',
-                      textDecoration: 'none',
-                    }}
-                  >
-                    Profile
-                  </Link>
-                </Typography>
-              )}
+                <MenuIcon sx={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
+              </IconButton>
+            )}
 
-                {/* New MAP link */}
-  {user && (
-    <Typography
-      variant="h6"
-      component="div"
-      sx={{
-        fontSize: '1rem',
-        marginLeft: '20px',
-      }}
-    >
-      <Link
-        to="/posts-map"
-        style={{
-          color: 'white',
-          textDecoration: 'none',
-        }}
-      >
-        Map
-      </Link>
-    </Typography>
-  )}
-
-
-
-
-
-
-            </Box>
-
-            
+            {/* App Logo/Title - centered on mobile, left on desktop */}
             <Typography
               variant="h6"
               component="div"
               sx={{
                 fontSize: '1.2rem',
-                color: 'white',
+                fontWeight: 'bold',
+                flexGrow: isMobile ? 1 : 0,
+                textAlign: isMobile ? 'center' : 'left',
+                color: theme === 'dark' ? '#fff' : '#0D3B66',
               }}
             >
               The Diary App
             </Typography>
 
-            
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-              {user && (
-                <IconButton
-                  color="inherit"
-                  onClick={toggleSearch}
-                  sx={{ minWidth: 'auto', padding: 0 }}
+            {/* Navigation Links - hidden on mobile */}
+            {!isMobile && (
+              <Box sx={{ display: 'flex', mx: 4, flexGrow: 1 }}>
+                <Button
+                  component={Link}
+                  to="/"
+                  sx={{
+                    mx: 1,
+                    color: theme === 'dark' ? '#fff' : '#0D3B66',
+                    '&:hover': {
+                      backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                      color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+                    },
+                    transition: 'all 0.2s ease',
+                    borderRadius: '4px',
+                    paddingX: 1.5,
+                  }}
+                  startIcon={
+                    <HomeIcon style={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
+                  }
                 >
-                  <SearchIcon />
-                </IconButton>
+                  Home
+                </Button>
+
+                <Button
+                  component={Link}
+                  to="/calendar"
+                  sx={{
+                    mx: 1,
+                    color: theme === 'dark' ? '#fff' : '#0D3B66',
+                    '&:hover': {
+                      backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                      color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+                    },
+                    transition: 'all 0.2s ease',
+                    borderRadius: '4px',
+                    paddingX: 1.5,
+                  }}
+                  startIcon={
+                    <CalendarMonthIcon style={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
+                  }
+                >
+                  Calendar
+                </Button>
+
+                {user && (
+                  <>
+                    <Button
+                      component={Link}
+                      to="/profile"
+                      sx={{
+                        mx: 1,
+                        color: theme === 'dark' ? '#fff' : '#0D3B66',
+                        '&:hover': {
+                          backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                          color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+                        },
+                        transition: 'all 0.2s ease',
+                        borderRadius: '4px',
+                        paddingX: 1.5,
+                      }}
+                      startIcon={
+                        <PersonIcon style={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
+                      }
+                    >
+                      Profile
+                    </Button>
+
+                    <Button
+                      component={Link}
+                      to="/posts-map"
+                      sx={{
+                        mx: 1,
+                        color: theme === 'dark' ? '#fff' : '#0D3B66',
+                        '&:hover': {
+                          backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                          color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+                        },
+                        transition: 'all 0.2s ease',
+                        borderRadius: '4px',
+                        paddingX: 1.5,
+                      }}
+                      startIcon={
+                        <MapIcon style={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
+                      }
+                    >
+                      Map
+                    </Button>
+                  </>
+                )}
+              </Box>
+            )}
+
+            {/* Right side controls */}
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {user && (
+                <Tooltip title="Search">
+                  <IconButton
+                    onClick={toggleSearch}
+                    sx={{ 
+                      mx: 1,
+                    }}
+                  >
+                    <SearchIcon sx={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
+                  </IconButton>
+                </Tooltip>
               )}
-              
-              <Button
-                color="inherit"
-                onClick={toggleTheme}
-                sx={{ minWidth: 'auto', padding: 0 }}
-              >
-                {theme === 'light' ? <FaMoon /> : <FaSun />}
-              </Button>
+
+              <Tooltip title={theme === 'light' ? 'Dark Mode' : 'Light Mode'}>
+                <IconButton
+                  onClick={toggleTheme}
+                  sx={{ 
+                    mx: 1,
+                  }}
+                >
+                  {theme === 'light' 
+                    ? <FaMoon style={{ color: '#0D3B66' }} /> 
+                    : <FaSun style={{ color: '#FFD700' }} />
+                  }
+                </IconButton>
+              </Tooltip>
 
               {user ? (
                 <>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      marginRight: 2,
-                      color: 'white',
-                      display: { xs: 'none', sm: 'block' }
-                    }}
-                  >
-                    {user.email}
-                  </Typography>
+                  <Tooltip title={user.email}>
+                    <Avatar 
+                      sx={{ 
+                        bgcolor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                        width: 36, 
+                        height: 36,
+                        mx: 1, 
+                        fontSize: '0.9rem',
+                        color: theme === 'dark' ? '#0D3B66' : '#fff'
+                      }}
+                    >
+                      {getUserInitials()}
+                    </Avatar>
+                  </Tooltip>
                   <Button
-                    color="inherit"
+                    variant="outlined"
+                    size="small"
                     onClick={handleClick}
                     sx={{
-                      color: 'white',
+                      ml: 1,
+                      borderColor: theme === 'dark' ? '#fff' : '#0D3B66',
+                      color: theme === 'dark' ? '#fff' : '#0D3B66',
+                      '&:hover': {
+                        backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(13,59,102,0.1)',
+                        borderColor: theme === 'dark' ? '#fff' : '#0D3B66',
+                      },
                     }}
                   >
                     Logout
@@ -194,21 +257,30 @@ const NavBar = () => {
               ) : (
                 <>
                   <Button
-                    color="inherit"
                     component={Link}
                     to="/api/login"
+                    variant="text"
                     sx={{
-                      color: 'white',
+                      mx: 1,
+                      color: theme === 'dark' ? '#fff' : '#0D3B66',
+                      '&:hover': {
+                        backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(13,59,102,0.1)',
+                      },
                     }}
                   >
                     Login
                   </Button>
                   <Button
-                    color="inherit"
                     component={Link}
                     to="/api/signup"
+                    variant="contained"
                     sx={{
-                      color: 'white',
+                      ml: 1,
+                      backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                      color: theme === 'dark' ? '#0D3B66' : '#fff',
+                      '&:hover': {
+                        backgroundColor: theme === 'dark' ? '#FFFFFF' : '#093057',
+                      },
                     }}
                   >
                     Signup
@@ -220,7 +292,148 @@ const NavBar = () => {
         </Container>
       </AppBar>
 
+      {/* Mobile menu drawer */}
+      <Drawer
+        anchor="left"
+        open={mobileOpen}
+        onClose={toggleMobileMenu}
+        PaperProps={{
+          sx: {
+            width: 240,
+            backgroundColor: theme === 'dark' ? '#1e1e1e' : '#fff',
+            color: theme === 'dark' ? '#fff' : '#0D3B66',
+          }
+        }}
+      >
+        <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Menu</Typography>
+            <IconButton onClick={toggleMobileMenu}>
+              <CloseIcon sx={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
+            </IconButton>
+          </Box>
+          
+          <Button
+            component={Link}
+            to="/"
+            onClick={toggleMobileMenu}
+            sx={{
+              justifyContent: 'flex-start',
+              mb: 1,
+              py: 1,
+              color: theme === 'dark' ? '#fff' : '#0D3B66',
+              '&:hover': {
+                backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+              },
+              transition: 'all 0.2s ease',
+              borderRadius: '4px',
+            }}
+            startIcon={
+              <HomeIcon style={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
+            }
+          >
+            Home
+          </Button>
+          
+          <Button
+            component={Link}
+            to="/calendar"
+            onClick={toggleMobileMenu}
+            sx={{
+              justifyContent: 'flex-start',
+              mb: 1,
+              py: 1,
+              color: theme === 'dark' ? '#fff' : '#0D3B66',
+              '&:hover': {
+                backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+              },
+              transition: 'all 0.2s ease',
+              borderRadius: '4px',
+            }}
+            startIcon={
+              <CalendarMonthIcon style={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
+            }
+          >
+            Calendar
+          </Button>
+          
+          {user && (
+            <>
+              <Button
+                component={Link}
+                to="/profile"
+                onClick={toggleMobileMenu}
+                sx={{
+                  justifyContent: 'flex-start',
+                  mb: 1,
+                  py: 1,
+                  color: theme === 'dark' ? '#fff' : '#0D3B66',
+                  '&:hover': {
+                    backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                    color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+                  },
+                  transition: 'all 0.2s ease',
+                  borderRadius: '4px',
+                }}
+                startIcon={
+                  <PersonIcon style={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
+                }
+              >
+                Profile
+              </Button>
+              
+              <Button
+                component={Link}
+                to="/posts-map"
+                onClick={toggleMobileMenu}
+                sx={{
+                  justifyContent: 'flex-start',
+                  mb: 1,
+                  py: 1,
+                  color: theme === 'dark' ? '#fff' : '#0D3B66',
+                  '&:hover': {
+                    backgroundColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',
+                    color: theme === 'dark' ? '#0D3B66' : '#FFFFFF',
+                  },
+                  transition: 'all 0.2s ease',
+                  borderRadius: '4px',
+                }}
+                startIcon={
+                  <MapIcon style={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
+                }
+              >
+                Map
+              </Button>
+            </>
+          )}
+          
+          {user && (
+            <Box sx={{ mt: 'auto', borderTop: 1, borderColor: theme === 'dark' ? '#333' : '#e0e0e0', pt: 2 }}>
+              <Typography variant="body2" sx={{ mb: 1, opacity: 0.7, color: theme === 'dark' ? '#fff' : '#0D3B66' }}>
+                {user.email}
+              </Typography>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={handleClick}
+                sx={{
+                  borderColor: theme === 'dark' ? '#fff' : '#0D3B66',
+                  color: theme === 'dark' ? '#fff' : '#0D3B66',
+                  '&:hover': {
+                    backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(13,59,102,0.1)',
+                  },
+                }}
+              >
+                Logout
+              </Button>
+            </Box>
+          )}
+        </Box>
+      </Drawer>
       
+      {/* Search drawer */}
       <Drawer
         anchor="top"
         open={searchOpen}
@@ -230,7 +443,9 @@ const NavBar = () => {
             pt: 1,
             pb: 2,
             px: 2,
-            backgroundColor: theme === 'dark' ? '#1c1c1c' : '#ffffff',
+            mt: '64px', // Account for AppBar height
+            backgroundColor: theme === 'dark' ? '#1e1e1e' : '#ffffff',
+            borderTop: `1px solid ${theme === 'dark' ? '#333' : '#93A8AC'}`,
           }
         }}
       >
@@ -240,18 +455,20 @@ const NavBar = () => {
           mb: 1
         }}>
           <IconButton onClick={() => setSearchOpen(false)}>
-            <CloseIcon sx={{ color: theme === 'dark' ? '#fff' : '#000' }} />
+            <CloseIcon sx={{ color: theme === 'dark' ? '#fff' : '#0D3B66' }} />
           </IconButton>
         </Box>
         <SearchBar 
           onSearchResults={(results) => {
-            
             if (isMobile) {
               setSearchOpen(false);
             }
           }} 
         />
       </Drawer>
+      
+      {/* Spacer to prevent content from hiding under the fixed AppBar */}
+      <Toolbar />
     </>
   );
 };
