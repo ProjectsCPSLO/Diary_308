@@ -94,7 +94,7 @@ const PostHead = ({ post, mapTileUrl, mapTileAttribution, themeKey }) => {
     const fetchCollaborators = async () => {
       try {
         const response = await fetch(
-          'http://localhost:4000/api/user/collaborators',
+          'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/user/collaborators',
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -115,7 +115,7 @@ const PostHead = ({ post, mapTileUrl, mapTileAttribution, themeKey }) => {
 
   const handleClick = async () => {
     const response = await fetch(
-      `http://localhost:4000/api/posts/${post._id}`,
+      `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${post._id}`,
       {
         method: 'DELETE',
         headers: {
@@ -150,7 +150,7 @@ const PostHead = ({ post, mapTileUrl, mapTileAttribution, themeKey }) => {
       }
 
       const response = await fetch(
-        `http://localhost:4000/api/posts/${post._id}/share`,
+        `https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts/${post._id}/share`,
         {
           method: 'POST',
           headers: {
