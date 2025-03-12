@@ -1,0 +1,15 @@
+## E2E Testing Scenarios
+
+### Scenario 1
+
+GIVEN the user is trying to access the Diary App
+WHEN they enter existing credentials to the email and password fields
+THEN they are able to obtain a valid token
+AND log in & view the home page
+
+### Scenario 2
+
+GIVEN the user is logged in
+WHEN they are in the home page and post a unique entry
+THEN they are able to verify such an entry was created
+AND are able to access it by clicking on it

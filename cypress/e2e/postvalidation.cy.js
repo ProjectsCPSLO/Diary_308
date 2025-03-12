@@ -3,6 +3,7 @@ describe('E2E', () => {
   it('should make a post and ensure it posts', () => {
     cy.visit('https://proud-mud-0b66be61e.6.azurestaticapps.net/');
 
+    // eslint-disable-next-line no-undef
     cy.get('input[name="email"').type('test@example.com');
     cy.get('input[name="password"').type('Password@123');
     cy.get('button[type="submit"]').click();
