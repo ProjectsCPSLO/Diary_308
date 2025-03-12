@@ -45,6 +45,8 @@ Project 8: https://github.com/users/muskasaid02/projects/15
 
 ## Testing methods
 
+Corresponding Acceptance Criteria spec can be found in backend/backend-tests/api and cypress/e2e
+
 ### Backend and API Testing
 
 Once you're in the backend directory of the project, run
