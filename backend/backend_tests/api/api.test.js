@@ -1,15 +1,32 @@
-// backend_tests/api/postApi.test.js
+// backend_tests/api/api.test.js
+import { jest } from '@jest/globals';
 
+import mongoose from 'mongoose';
 import request from 'supertest';
-import { app } from '../../server.js'; // Adjust path if needed
+import app from '../../app.js';
+import dotenv from 'dotenv';
 
-// eslint-disable-next-line no-undef
+dotenv.config();
+
+// Increase Jest's timeout to 20 seconds
+jest.setTimeout(20000);
+
 describe('Posts API', () => {
+  let server;
   let token;
 
   beforeAll(async () => {
-    // 1) Log in to get the token
-    const res = await request(app)
+    // Connect to the database manually (since we're not using server.js)
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    // Start the server on an ephemeral port
+    server = app.listen(0);
+
+    // Log in to get the token
+    const res = await request(server)
       .post('/api/user/login')
       .send({
         email: 'test@example.com',
@@ -17,15 +34,14 @@ describe('Posts API', () => {
       })
       .expect(200);
 
-    // 2) Store the token
     token = res.body.token;
     expect(token).toBeDefined();
   });
-  // 1) GET scenario
-  it('GET /api/posts should return an array of posts and validate for the presence of ONE uniquely created post', async () => {
-    const response = await request(app)
+
+  it('GET /api/posts should return an array of posts and validate for the presence of one uniquely created post', async () => {
+    const response = await request(server)
       .get('/api/posts')
-      .set('Authorization', `Bearer ${token}`) // 3) Pass token in header
+      .set('Authorization', `Bearer ${token}`)
       .expect(200);
 
     console.log(response.body);
@@ -37,8 +53,7 @@ describe('Posts API', () => {
           _id: '67d1d0ba6b4b64b478382fe2',
           date: '2025-03-12T18:21:46.000Z',
           title: "Pranav's only unique post",
-          content:
-            '<p>Contains my current favorite video game: MARVEL RIVALS.</p>',
+          content: '<p>Contains my current favorite video game: MARVEL RIVALS.</p>',
           user_id: '67d0a258ae67602b68a70f3e',
           mood: 'Excited',
           password: null,
@@ -51,30 +66,32 @@ describe('Posts API', () => {
       ])
     );
   });
+
   it('ensures POST works by creating and posting a diary entry and validating through a GET', async () => {
     const randomText = `Test Title #${Math.floor(Math.random() * 1000000)}`;
     const newPost = {
       title: randomText,
-      // Assuming your API wraps the content with <p> tags (as seen in your GET responses)
       content: randomText,
       mood: 'Sad',
       date: new Date().toISOString(),
       location: null, // Geotag disabled
       password: null,
     };
-    const postResponse = await request(app)
+
+    const postResponse = await request(server)
       .post('/api/posts')
       .set('Authorization', `Bearer ${token}`)
       .send(newPost)
       .set('Content-Type', 'application/json')
       .expect(200);
+
     expect(postResponse.body).toHaveProperty('_id');
     expect(postResponse.body.title).toBe(randomText);
     expect(postResponse.body.content).toBe(`${randomText}`);
     expect(postResponse.body.mood).toBe('Sad');
     expect(postResponse.body.location).toBeNull();
 
-    const getResponse = await request(app)
+    const getResponse = await request(server)
       .get('/api/posts')
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
@@ -93,5 +110,17 @@ describe('Posts API', () => {
       password: null,
       location: null,
     });
+  });
+
+  afterAll(async () => {
+    // Close the HTTP server
+    await new Promise((resolve, reject) => {
+      server.close((err) => {
+        if (err) return reject(err);
+        resolve();
+      });
+    });
+    // Then close the Mongoose connection
+    await mongoose.connection.close();
   });
 });
