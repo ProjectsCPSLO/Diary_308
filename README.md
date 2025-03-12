@@ -4,7 +4,8 @@ https://docs.google.com/document/d/1ZRcK2oT0tjEoZTflqmBYfup_mU4T2AtcgVjzHt8GWcI/
 
 ## UI Mockup:
 
-https://www.figma.com/proto/G5pfmmwnsWNGZqJeakznSS/308-Journal?node-id=13-1846&starting-point-node-id=13%3A1846
+https://www.figma.com/design/DJVc6auQF59KlRWR7FTcFo/Untitled?node-id=0-1&p=f
+
 
 ## Code Style Guidelines
 
@@ -30,17 +31,34 @@ This project uses **Prettier** and **ESLint** to enforce code style and best pra
 
    ```
 
-To view our cloud deployed site: https://proud-mud-0b66be61e.6.azurestaticapps.net
+### To view our cloud deployed site: 
+
+https://proud-mud-0b66be61e.6.azurestaticapps.net
+
 
 ## Sprint Boards
 
 Project 1: https://github.com/users/muskasaid02/projects/2
+
+
 Project 2: https://github.com/users/muskasaid02/projects/8
+
+
 Project 3: https://github.com/users/muskasaid02/projects/10
+
+
 Project 4: https://github.com/users/muskasaid02/projects/11
+
+
 Project 5: https://github.com/users/muskasaid02/projects/12
+
+
 Project 6: https://github.com/users/muskasaid02/projects/13
+
+
 Project 7: https://github.com/users/muskasaid02/projects/14
+
+
 Project 8: https://github.com/users/muskasaid02/projects/15
 
 ## Testing methods
@@ -72,3 +90,9 @@ npx cypress open
 ```
 
 and select your desired browser -> E2E Testing -> click on each of the different specs to test different scenarios
+
+
+## Setting up Environment variables
+
+Request any of the project collaborators for backend/.env file's contentss
+
