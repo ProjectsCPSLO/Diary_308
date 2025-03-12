@@ -4,7 +4,7 @@ https://docs.google.com/document/d/1ZRcK2oT0tjEoZTflqmBYfup_mU4T2AtcgVjzHt8GWcI/
 
 ## UI Mockup:
 
-https://www.figma.com/proto/G5pfmmwnsWNGZqJeakznSS/308-Journal?node-id=13-1846&starting-point-node-id=13%3A1846
+https://www.figma.com/design/DJVc6auQF59KlRWR7FTcFo/Untitled?node-id=0-1&p=f
 
 ## Code Style Guidelines
 
