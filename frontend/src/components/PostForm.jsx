@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { usePostsContext } from '../hooks/usePostsContext';
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -14,7 +14,7 @@ import {
   FormControl,
   Alert,
   Switch,
-  FormControlLabel
+  FormControlLabel,
 } from '@mui/material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -30,6 +30,9 @@ const PostForm = () => {
     setError,
     reset,
     formState: { errors },
+    clearErrors, // Add clearErrors to clear validation errors
+
+    setValue,
   } = useForm();
   const { dispatch } = usePostsContext();
   const { user } = useAuthContext();
@@ -45,6 +48,15 @@ const PostForm = () => {
   const [location, setLocation] = useState(null);
   // Toggle to control if geotagging is enabled
   const [geotagEnabled, setGeotagEnabled] = useState(true);
+
+  // Update the form value when mood changes
+
+  useEffect(() => {
+    setValue('mood', mood);
+    if (mood) {
+      clearErrors('mood'); // clear the error when a valid mood is selected?
+    }
+  }, [mood, setValue, clearErrors]);
 
   const editorModules = {
     toolbar: [
@@ -98,6 +110,11 @@ const PostForm = () => {
   };
 
   const onSubmit = async (data) => {
+    if (!mood) {
+      setError('mood', { type: 'manual', message: 'Mood is required' });
+      return;
+    }
+
     const dateParts = data.date.split('-');
     const year = parseInt(dateParts[0], 10);
     const month = parseInt(dateParts[1], 10) - 1; 
@@ -126,7 +143,9 @@ const PostForm = () => {
     
     console.log('Full post data:', post);
     try {
-      const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts', {
+      const response = await fetch(
+        'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts',
+        {
         method: 'POST',
         body: JSON.stringify(post),
         headers: {
@@ -141,6 +160,7 @@ const PostForm = () => {
         setMood('neutral');
         setCurrentPrompt('');
         setTags([]);
+        setMood('');
         // Clear location only if geotagging is enabled; otherwise, leave it as null.
         if (geotagEnabled) {
           setLocation(null);
@@ -340,8 +360,12 @@ const PostForm = () => {
               <MenuItem value="Anxious">Anxious</MenuItem>
               <MenuItem value="Neutral">Neutral</MenuItem>
             </Select>
+            {errors.mood && (
+              <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+                Mood is required
+              </Typography>
+            )}
           </FormControl>
-  
           <TextField
             label="Password (Optional)"
             type="password"

@@ -27,21 +27,26 @@ const Home = () => {
 
   // Add this section to define map tile variables
   // This will be passed to the PostHead component
-  const tileLayerUrl = theme === 'dark' 
-    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' 
-    : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  
-  const tileLayerAttribution = theme === 'dark'
-    ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-    : '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+  const tileLayerUrl =
+    theme === 'dark'
+      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+  const tileLayerAttribution =
+    theme === 'dark'
+      ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+      : '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts', {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await fetch(
+        'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts',
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
       const json = await response.json();
 
       if (response.ok) dispatch({ type: 'SET_POSTS', payload: json });

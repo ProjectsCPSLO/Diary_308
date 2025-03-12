@@ -11,7 +11,7 @@ export const useSignup = () => {
     setError(null);
 
     try {
-      const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/user/signup', {
+      const response = await fetch('http://locahost:4000/api/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

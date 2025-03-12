@@ -53,7 +53,9 @@ export const PostsContextProvider = ({ children }) => {
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user) return;
 
-        const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts', {
+        const response = await fetch(
+          'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts',
+          {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
