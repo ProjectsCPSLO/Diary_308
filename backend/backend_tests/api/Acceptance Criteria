@@ -1,0 +1,21 @@
+## API Testing Scenarios
+
+### Scenario 1
+
+GIVEN the user is trying to access the Diary App
+WHEN they enter existing credentials to the email and password fields
+THEN they are able to obtain a valid token
+AND log in & view the home page
+
+### Scenario 2 (GET Validation Scenario)
+
+GIVEN the user is logged in
+WHEN they are in the home page
+THEN they are able to see any and all of their expected posts shown
+
+### Scenario 3 (POST Validation Scenario)
+
+GIVEN the user is logged in
+WHEN they are in the home page and post an entry
+THEN they are able to verify such an entry was created
+AND are able to access it by clicking on it(using GET to validate the POST)

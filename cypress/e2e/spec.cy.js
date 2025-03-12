@@ -9,5 +9,3 @@ describe('Login E2E', () => {
     cy.contains('Create a Post').should('be.visible');
   });
 });
-
-//test to simulate
