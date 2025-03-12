@@ -30,7 +30,9 @@ This project uses **Prettier** and **ESLint** to enforce code style and best pra
 
    ```
 
-To view our cloud deployed site: https://proud-mud-0b66be61e.6.azurestaticapps.net
+### To view our cloud deployed site: 
+
+https://proud-mud-0b66be61e.6.azurestaticapps.net
 
 ## Sprint Boards
 
@@ -86,3 +88,7 @@ npx cypress open
 ```
 
 and select your desired browser -> E2E Testing -> click on each of the different specs to test different scenarios
+
+## Setting up Environment variables
+
+Request any of the project collaborators for backend/.env file's contentss
