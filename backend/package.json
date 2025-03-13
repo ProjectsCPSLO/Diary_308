@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "lint": "npx eslint",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --coverage",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
