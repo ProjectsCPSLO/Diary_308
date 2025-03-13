@@ -4,29 +4,17 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import postRoutes from './routes/posts.js';
 import userRoutes from './routes/users.js';
+import app from './app.js';
 
 dotenv.config();
-const port = process.env.PORT;
-
-const app = express();
-app.use(express.json());
-app.use(cors());
-
-app.use((req, res, next) => {
-  console.log(req.path, req.method);
-  next();
-});
-
-app.use('/api/posts', postRoutes);
-app.use('/api/user', userRoutes);
-
+const port = process.env.PORT || 3000;
 const connectDB = async () => {
   try {
     mongoose.set('strictQuery', true);
 
     mongoose.connect(process.env.MONGO_URI, {
-      //useNewUrlParser: true,
-      //useUnifiedTopology: true
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
     console.log('MongoDB connected');
   } catch (err) {
@@ -38,9 +26,7 @@ const connectDB = async () => {
 connectDB()
   .then(() => {
     app.listen(process.env.PORT || port, () => {
-      console.log("REST API is listening.");
+      console.log('REST API is listening.');
     });
   })
   .catch((err) => console.log(err));
-
-export { app };

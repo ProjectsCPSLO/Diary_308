@@ -195,9 +195,10 @@ const PostHead = ({ post, mapTileUrl, mapTileAttribution, themeKey }) => {
     color: theme === 'dark' ? '#fff' : '#0D3B66',
     padding: '1.5rem',
     borderRadius: '12px',
-    boxShadow: theme === 'dark' 
-      ? '0 4px 20px rgba(0,0,0,0.3)'
-      : '0 4px 20px rgba(0,0,0,0.08)',
+    boxShadow:
+      theme === 'dark'
+        ? '0 4px 20px rgba(0,0,0,0.3)'
+        : '0 4px 20px rgba(0,0,0,0.08)',
     border: 'none',
     transition: 'transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease',
     display: 'flex',
@@ -206,10 +207,11 @@ const PostHead = ({ post, mapTileUrl, mapTileAttribution, themeKey }) => {
     minHeight: '200px',
     '&:hover': {
       transform: 'translateY(-5px)',
-      boxShadow: theme === 'dark' 
-        ? '0 10px 25px rgba(0,0,0,0.4)'
-        : '0 10px 25px rgba(0,0,0,0.1)',
-    }
+      boxShadow:
+        theme === 'dark'
+          ? '0 10px 25px rgba(0,0,0,0.4)'
+          : '0 10px 25px rgba(0,0,0,0.1)',
+    },
   };
 
   const titleStyle = {
