@@ -146,13 +146,14 @@ const PostForm = () => {
       const response = await fetch(
         'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts',
         {
-        method: 'POST',
-        body: JSON.stringify(post),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+          method: 'POST',
+          body: JSON.stringify(post),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
       const json = await response.json();
       if (response.ok) {
         reset({ title: '', date: '', password: '' });
@@ -242,7 +243,10 @@ const PostForm = () => {
             sx={{
               '& .MuiOutlinedInput-root': {
                 '& fieldset': {
-                  borderColor: theme === 'dark' ? 'rgba(147, 168, 172, 0.3)' : 'rgba(13, 59, 102, 0.3)',
+                  borderColor:
+                    theme === 'dark'
+                      ? 'rgba(147, 168, 172, 0.3)'
+                      : 'rgba(13, 59, 102, 0.3)',
                 },
                 '&:hover fieldset': {
                   borderColor: theme === 'dark' ? '#93A8AC' : '#0D3B66',

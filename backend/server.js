@@ -13,8 +13,8 @@ const connectDB = async () => {
     mongoose.set('strictQuery', true);
 
     mongoose.connect(process.env.MONGO_URI, {
-      //useNewUrlParser: true,
-      //useUnifiedTopology: true
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
     console.log('MongoDB connected');
   } catch (err) {

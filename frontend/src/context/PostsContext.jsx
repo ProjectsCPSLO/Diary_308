@@ -56,10 +56,10 @@ export const PostsContextProvider = ({ children }) => {
         const response = await fetch(
           'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts',
           {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
+            headers: {
+              Authorization: `Bearer ${user.token}`,
           },
-        });
+          }
         
         if (response.ok) {
           const data = await response.json();

@@ -1,3 +1,4 @@
+
 // backend_tests/api/api.test.js
 import { jest } from '@jest/globals';
 
@@ -27,6 +28,7 @@ describe('Posts API', () => {
 
     // Log in to get the token
     const res = await request(server)
+
       .post('/api/user/login')
       .send({
         email: 'test@example.com',
@@ -42,6 +44,7 @@ describe('Posts API', () => {
     const response = await request(server)
       .get('/api/posts')
       .set('Authorization', `Bearer ${token}`)
+
       .expect(200);
 
     console.log(response.body);
@@ -79,6 +82,7 @@ describe('Posts API', () => {
     };
 
     const postResponse = await request(server)
+
       .post('/api/posts')
       .set('Authorization', `Bearer ${token}`)
       .send(newPost)
@@ -111,6 +115,7 @@ describe('Posts API', () => {
       location: null,
     });
   });
+
 
   afterAll(async () => {
     // Close the HTTP server
