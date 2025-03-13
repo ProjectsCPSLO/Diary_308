@@ -8,6 +8,7 @@ import app from '../../app.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
 // eslint-disable-next-line no-undef
 // Increase Jest's timeout to 20 seconds
 jest.setTimeout(20000);
@@ -23,6 +24,7 @@ describe('Posts API', () => {
       {
         //useNewUrlParser: true,
         //useUnifiedTopology: true,
+=
     });
 
     // Start the server on an ephemeral port
@@ -30,6 +32,7 @@ describe('Posts API', () => {
 
     // Log in to get the token
     const res = await request(server)
+
       .post('/api/user/login')
       .send({
         email: 'test@example.com',
@@ -120,7 +123,9 @@ describe('Posts API', () => {
 
   afterAll(async () => {
     // Close the HTTP server
+
     if (server) {
+
     await new Promise((resolve, reject) => {
       server.close((err) => {
         if (err) return reject(err);
@@ -130,4 +135,5 @@ describe('Posts API', () => {
   }
   await mongoose.connection.close();
 });
+
 });
