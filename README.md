@@ -83,3 +83,6 @@ npx cypress open
 and select your desired browser -> E2E Testing -> click on each of the different specs to test different scenarios.
 
 Acceptance criteria documents are in cypress/e2e
+
+### Coverage Report:
+![image](https://github.com/user-attachments/assets/32c50469-7fbc-4ce0-8206-e6d95f8302d5)
