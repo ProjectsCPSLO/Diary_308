@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1741835527086" clover="3.2.0">
-  <project timestamp="1741835527087" name="All files">
+<coverage generated="1741985512502" clover="3.2.0">
+  <project timestamp="1741985512502" name="All files">
     <metrics statements="213" coveredstatements="213" conditionals="70" coveredconditionals="66" methods="19" coveredmethods="19" elements="302" coveredelements="298" complexity="0" loc="213" ncloc="213" packages="4" files="7" classes="7"/>
     <package name="controllers">
       <metrics statements="139" coveredstatements="139" conditionals="40" coveredconditionals="37" methods="14" coveredmethods="14"/>
-      <file name="postControllers.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/controllers/postControllers.js">
+      <file name="postControllers.js" path="/Users/pranavnallaperumal/Documents/Diary_308/backend/controllers/postControllers.js">
         <metrics statements="106" coveredstatements="106" conditionals="40" coveredconditionals="37" methods="8" coveredmethods="8"/>
         <line num="6" count="1" type="stmt"/>
         <line num="7" count="2" type="stmt"/>
@@ -113,7 +113,7 @@
         <line num="234" count="2" type="stmt"/>
         <line num="239" count="1" type="stmt"/>
       </file>
-      <file name="userControllers.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/controllers/userControllers.js">
+      <file name="userControllers.js" path="/Users/pranavnallaperumal/Documents/Diary_308/backend/controllers/userControllers.js">
         <metrics statements="33" coveredstatements="33" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="6"/>
         <line num="4" count="2" type="stmt"/>
         <line num="5" count="4" type="stmt"/>
@@ -152,7 +152,7 @@
     </package>
     <package name="middleware">
       <metrics statements="12" coveredstatements="12" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-      <file name="auth.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/middleware/auth.js">
+      <file name="auth.js" path="/Users/pranavnallaperumal/Documents/Diary_308/backend/middleware/auth.js">
         <metrics statements="12" coveredstatements="12" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="4" count="2" type="stmt"/>
         <line num="5" count="4" type="stmt"/>
@@ -170,11 +170,11 @@
     </package>
     <package name="models">
       <metrics statements="47" coveredstatements="47" conditionals="28" coveredconditionals="27" methods="4" coveredmethods="4"/>
-      <file name="Post.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/models/Post.js">
+      <file name="Post.js" path="/Users/pranavnallaperumal/Documents/Diary_308/backend/models/Post.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="4" count="1" type="stmt"/>
       </file>
-      <file name="User.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/models/User.js">
+      <file name="User.js" path="/Users/pranavnallaperumal/Documents/Diary_308/backend/models/User.js">
         <metrics statements="46" coveredstatements="46" conditionals="28" coveredconditionals="27" methods="4" coveredmethods="4"/>
         <line num="6" count="3" type="stmt"/>
         <line num="40" count="3" type="stmt"/>
@@ -226,7 +226,7 @@
     </package>
     <package name="routes">
       <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="posts.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/routes/posts.js">
+      <file name="posts.js" path="/Users/pranavnallaperumal/Documents/Diary_308/backend/routes/posts.js">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="13" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
@@ -238,7 +238,7 @@
         <line num="21" count="1" type="stmt"/>
         <line num="22" count="1" type="stmt"/>
       </file>
-      <file name="users.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/routes/users.js">
+      <file name="users.js" path="/Users/pranavnallaperumal/Documents/Diary_308/backend/routes/users.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="11" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>

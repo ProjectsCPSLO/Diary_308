@@ -61,6 +61,7 @@ Once you're in the backend directory of the project, run
 ```bash
 npm test
 ```
+
 Jest is currently set to ignore backend/backend_tests/api, but associated acceptance criteria are available at backend_tests/api
 
 ### End-to-End Automated Testing
