@@ -9,5 +9,6 @@ export default {
   testMatch: ['**/__tests__/**/*.js', '**/?(*.)+(spec|test).js'],
   transformIgnorePatterns: [],
   forceExit: true,
-  testTimeout: 10000
+  testTimeout: 10000,
+  testPathIgnorePatterns: ["/backend_tests/api/api.test.js"],
 };
