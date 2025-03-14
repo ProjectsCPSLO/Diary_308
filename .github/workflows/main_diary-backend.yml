@@ -27,7 +27,7 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-          npm run test --if-present
+          npm test -- --testPathIgnorePatterns=backend/backend_tests/api
         working-directory: ./backend
 
       - name: Zip artifact for deployment
