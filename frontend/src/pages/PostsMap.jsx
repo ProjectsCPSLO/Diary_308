@@ -22,20 +22,22 @@ const PostsMap = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      try { 
+      try {
         const response = await fetch(
           'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/posts',
           {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
         const data = await response.json();
         // Filter posts that have a valid location
-        const postsWithLocation = data.filter(post => 
-          post.location &&
-          typeof post.location.lat === 'number' &&
-          typeof post.location.lng === 'number'
+        const postsWithLocation = data.filter(
+          (post) =>
+            post.location &&
+            typeof post.location.lat === 'number' &&
+            typeof post.location.lng === 'number'
         );
         setPosts(postsWithLocation);
       } catch (error) {

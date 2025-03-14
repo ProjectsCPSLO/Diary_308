@@ -1,166 +1,251 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1733802795660" clover="3.2.0">
-  <project timestamp="1733802795660" name="All files">
-    <metrics statements="122" coveredstatements="82" conditionals="36" coveredconditionals="24" methods="17" coveredmethods="11" elements="175" coveredelements="117" complexity="0" loc="122" ncloc="122" packages="5" files="8" classes="8"/>
-    <package name="backend">
-      <metrics statements="20" coveredstatements="17" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="4"/>
-      <file name="server.js" path="/Users/muskasaid/diaryapp/backend/server.js">
-        <metrics statements="20" coveredstatements="17" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="4"/>
-        <line num="8" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="stmt"/>
+<coverage generated="1741835527086" clover="3.2.0">
+  <project timestamp="1741835527087" name="All files">
+    <metrics statements="213" coveredstatements="213" conditionals="70" coveredconditionals="66" methods="19" coveredmethods="19" elements="302" coveredelements="298" complexity="0" loc="213" ncloc="213" packages="4" files="7" classes="7"/>
+    <package name="controllers">
+      <metrics statements="139" coveredstatements="139" conditionals="40" coveredconditionals="37" methods="14" coveredmethods="14"/>
+      <file name="postControllers.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/controllers/postControllers.js">
+        <metrics statements="106" coveredstatements="106" conditionals="40" coveredconditionals="37" methods="8" coveredmethods="8"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
-        <line num="16" count="10" type="stmt"/>
-        <line num="17" count="10" type="stmt"/>
         <line num="20" count="1" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
-        <line num="25" count="1" type="stmt"/>
-        <line num="27" count="1" type="stmt"/>
+        <line num="21" count="6" type="stmt"/>
+        <line num="22" count="6" type="stmt"/>
+        <line num="23" count="6" type="stmt"/>
+        <line num="25" count="6" type="stmt"/>
+        <line num="30" count="6" type="cond" truecount="2" falsecount="0"/>
         <line num="31" count="1" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="38" count="1" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="40" count="0" type="stmt"/>
+        <line num="34" count="5" type="stmt"/>
+        <line num="35" count="5" type="stmt"/>
+        <line num="36" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="41" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="42" count="4" type="stmt"/>
+        <line num="48" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="55" count="3" type="stmt"/>
+        <line num="56" count="3" type="stmt"/>
+        <line num="58" count="3" type="stmt"/>
+        <line num="59" count="2" type="stmt"/>
+        <line num="61" count="2" type="stmt"/>
+        <line num="69" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="77" count="1" type="stmt"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="87" count="4" type="stmt"/>
+        <line num="88" count="4" type="stmt"/>
+        <line num="90" count="4" type="stmt"/>
+        <line num="91" count="4" type="stmt"/>
+        <line num="96" count="4" type="stmt"/>
+        <line num="98" count="4" type="stmt"/>
+        <line num="99" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="100" count="2" type="stmt"/>
+        <line num="101" count="2" type="stmt"/>
+        <line num="104" count="1" type="stmt"/>
+        <line num="105" count="1" type="stmt"/>
+        <line num="109" count="3" type="stmt"/>
+        <line num="120" count="2" type="stmt"/>
+        <line num="121" count="2" type="stmt"/>
+        <line num="122" count="2" type="stmt"/>
+        <line num="123" count="2" type="stmt"/>
+        <line num="125" count="2" type="stmt"/>
+        <line num="127" count="2" type="stmt"/>
+        <line num="128" count="2" type="stmt"/>
+        <line num="133" count="1" type="stmt"/>
+        <line num="134" count="4" type="stmt"/>
+        <line num="136" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="137" count="1" type="stmt"/>
+        <line num="139" count="3" type="stmt"/>
+        <line num="140" count="3" type="stmt"/>
+        <line num="141" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="143" count="1" type="stmt"/>
+        <line num="144" count="1" type="stmt"/>
+        <line num="146" count="1" type="stmt"/>
+        <line num="151" count="1" type="stmt"/>
+        <line num="152" count="4" type="stmt"/>
+        <line num="154" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="155" count="1" type="stmt"/>
+        <line num="157" count="3" type="stmt"/>
+        <line num="158" count="3" type="stmt"/>
+        <line num="159" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="162" count="1" type="stmt"/>
+        <line num="168" count="1" type="stmt"/>
+        <line num="170" count="1" type="stmt"/>
+        <line num="175" count="1" type="stmt"/>
+        <line num="176" count="6" type="stmt"/>
+        <line num="177" count="6" type="stmt"/>
+        <line num="178" count="6" type="stmt"/>
+        <line num="180" count="6" type="stmt"/>
+        <line num="181" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="183" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="184" count="1" type="stmt"/>
+        <line num="187" count="5" type="stmt"/>
+        <line num="188" count="5" type="stmt"/>
+        <line num="189" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="190" count="1" type="stmt"/>
+        <line num="193" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="194" count="1" type="stmt"/>
+        <line num="197" count="3" type="stmt"/>
+        <line num="198" count="3" type="stmt"/>
+        <line num="199" count="2" type="stmt"/>
+        <line num="201" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="202" count="1" type="stmt"/>
+        <line num="205" count="1" type="stmt"/>
+        <line num="207" count="1" type="stmt"/>
+        <line num="208" count="1" type="stmt"/>
+        <line num="213" count="1" type="stmt"/>
+        <line num="214" count="4" type="stmt"/>
+        <line num="215" count="4" type="stmt"/>
+        <line num="217" count="4" type="stmt"/>
+        <line num="218" count="4" type="stmt"/>
+        <line num="220" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="221" count="1" type="stmt"/>
+        <line num="225" count="2" type="stmt"/>
+        <line num="226" count="4" type="stmt"/>
+        <line num="229" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="230" count="2" type="stmt"/>
+        <line num="231" count="2" type="stmt"/>
+        <line num="234" count="2" type="stmt"/>
+        <line num="239" count="1" type="stmt"/>
+      </file>
+      <file name="userControllers.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/controllers/userControllers.js">
+        <metrics statements="33" coveredstatements="33" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="6"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="12" count="5" type="stmt"/>
+        <line num="13" count="5" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="28" count="6" type="stmt"/>
+        <line num="30" count="6" type="stmt"/>
+        <line num="31" count="6" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="34" count="2" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="46" count="2" type="stmt"/>
+        <line num="47" count="2" type="stmt"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="58" count="2" type="stmt"/>
+        <line num="59" count="2" type="stmt"/>
+        <line num="60" count="2" type="stmt"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="72" count="2" type="stmt"/>
+        <line num="73" count="3" type="stmt"/>
+        <line num="75" count="3" type="stmt"/>
+        <line num="76" count="3" type="stmt"/>
+        <line num="77" count="2" type="stmt"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="86" count="2" type="stmt"/>
       </file>
     </package>
-    <package name="backend.controllers">
-      <metrics statements="55" coveredstatements="21" conditionals="12" coveredconditionals="0" methods="8" coveredmethods="3"/>
-      <file name="postControllers.js" path="/Users/muskasaid/diaryapp/backend/controllers/postControllers.js">
-        <metrics statements="39" coveredstatements="5" conditionals="12" coveredconditionals="0" methods="5" coveredmethods="0"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="5" count="0" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="18" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="22" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="29" count="1" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="31" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="41" count="1" type="stmt"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="44" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="46" count="0" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="48" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="49" count="0" type="stmt"/>
-        <line num="50" count="0" type="stmt"/>
-        <line num="52" count="0" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="57" count="0" type="stmt"/>
-        <line num="59" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
-        <line num="63" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
-        <line num="67" count="0" type="stmt"/>
-      </file>
-      <file name="userControllers.js" path="/Users/muskasaid/diaryapp/backend/controllers/userControllers.js">
-        <metrics statements="16" coveredstatements="16" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="5" count="2" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
-        <line num="14" count="6" type="stmt"/>
-        <line num="16" count="6" type="stmt"/>
-        <line num="17" count="6" type="stmt"/>
+    <package name="middleware">
+      <metrics statements="12" coveredstatements="12" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+      <file name="auth.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/middleware/auth.js">
+        <metrics statements="12" coveredstatements="12" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="7" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
         <line num="18" count="1" type="stmt"/>
         <line num="19" count="1" type="stmt"/>
-        <line num="21" count="5" type="stmt"/>
-        <line num="26" count="1" type="stmt"/>
-        <line num="27" count="4" type="stmt"/>
-        <line num="29" count="4" type="stmt"/>
-        <line num="30" count="4" type="stmt"/>
-        <line num="31" count="1" type="stmt"/>
-        <line num="32" count="1" type="stmt"/>
-        <line num="34" count="3" type="stmt"/>
       </file>
     </package>
-    <package name="backend.middleware">
-      <metrics statements="11" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-      <file name="auth.js" path="/Users/muskasaid/diaryapp/backend/middleware/auth.js">
-        <metrics statements="11" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="4" count="2" type="stmt"/>
-        <line num="5" count="2" type="stmt"/>
-        <line num="7" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="18" count="1" type="stmt"/>
+    <package name="models">
+      <metrics statements="47" coveredstatements="47" conditionals="28" coveredconditionals="27" methods="4" coveredmethods="4"/>
+      <file name="Post.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/models/Post.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="4" count="1" type="stmt"/>
+      </file>
+      <file name="User.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/models/User.js">
+        <metrics statements="46" coveredstatements="46" conditionals="28" coveredconditionals="27" methods="4" coveredmethods="4"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="41" count="17" type="stmt"/>
+        <line num="44" count="3" type="stmt"/>
+        <line num="45" count="22" type="cond" truecount="4" falsecount="0"/>
+        <line num="46" count="2" type="stmt"/>
+        <line num="48" count="20" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="51" count="19" type="cond" truecount="2" falsecount="0"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="55" count="18" type="stmt"/>
+        <line num="56" count="18" type="cond" truecount="2" falsecount="0"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="61" count="17" type="stmt"/>
+        <line num="63" count="17" type="stmt"/>
+        <line num="64" count="17" type="stmt"/>
+        <line num="65" count="17" type="stmt"/>
+        <line num="66" count="17" type="cond" truecount="1" falsecount="1"/>
+        <line num="67" count="17" type="stmt"/>
+        <line num="71" count="17" type="stmt"/>
+        <line num="72" count="17" type="stmt"/>
+        <line num="74" count="17" type="stmt"/>
+        <line num="82" count="17" type="stmt"/>
+        <line num="85" count="3" type="stmt"/>
+        <line num="86" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="87" count="2" type="stmt"/>
+        <line num="90" count="3" type="stmt"/>
+        <line num="91" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="92" count="1" type="stmt"/>
+        <line num="95" count="2" type="stmt"/>
+        <line num="96" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="97" count="1" type="stmt"/>
+        <line num="100" count="1" type="stmt"/>
+        <line num="103" count="3" type="stmt"/>
+        <line num="104" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="105" count="1" type="stmt"/>
+        <line num="108" count="5" type="stmt"/>
+        <line num="109" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="110" count="1" type="stmt"/>
+        <line num="113" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="114" count="1" type="stmt"/>
+        <line num="117" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="118" count="1" type="stmt"/>
+        <line num="121" count="2" type="stmt"/>
+        <line num="122" count="2" type="stmt"/>
+        <line num="124" count="2" type="stmt"/>
       </file>
     </package>
-    <package name="backend.models">
-      <metrics statements="26" coveredstatements="25" conditionals="22" coveredconditionals="22" methods="3" coveredmethods="3"/>
-      <file name="Post.js" path="/Users/muskasaid/diaryapp/backend/models/Post.js">
-        <metrics statements="8" coveredstatements="7" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
-        <line num="4" count="2" type="stmt"/>
-        <line num="43" count="2" type="stmt"/>
-        <line num="44" count="3" type="cond" truecount="4" falsecount="0"/>
-        <line num="45" count="1" type="stmt"/>
-        <line num="46" count="1" type="stmt"/>
-        <line num="47" count="1" type="stmt"/>
-        <line num="49" count="0" type="stmt"/>
-        <line num="52" count="3" type="stmt"/>
-      </file>
-      <file name="User.js" path="/Users/muskasaid/diaryapp/backend/models/User.js">
-        <metrics statements="18" coveredstatements="18" conditionals="18" coveredconditionals="18" methods="2" coveredmethods="2"/>
-        <line num="5" count="3" type="stmt"/>
-        <line num="21" count="3" type="stmt"/>
-        <line num="22" count="15" type="cond" truecount="4" falsecount="0"/>
-        <line num="23" count="13" type="cond" truecount="2" falsecount="0"/>
-        <line num="24" count="11" type="cond" truecount="2" falsecount="0"/>
-        <line num="26" count="9" type="stmt"/>
-        <line num="27" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="29" count="5" type="stmt"/>
-        <line num="30" count="5" type="stmt"/>
-        <line num="32" count="5" type="stmt"/>
-        <line num="34" count="5" type="stmt"/>
-        <line num="37" count="3" type="stmt"/>
-        <line num="38" count="9" type="cond" truecount="4" falsecount="0"/>
-        <line num="40" count="6" type="stmt"/>
-        <line num="41" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="43" count="4" type="stmt"/>
-        <line num="45" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="47" count="2" type="stmt"/>
-      </file>
-    </package>
-    <package name="backend.routes">
-      <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="posts.js" path="/Users/muskasaid/diaryapp/backend/routes/posts.js">
-        <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="stmt"/>
+    <package name="routes">
+      <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="posts.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/routes/posts.js">
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="13" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
         <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
       </file>
-      <file name="users.js" path="/Users/muskasaid/diaryapp/backend/routes/users.js">
-        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="7" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="10" count="1" type="stmt"/>
+      <file name="users.js" path="/Users/amarbirjanda/Documents/project_directory/Diary_308/backend/routes/users.js">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
       </file>
     </package>
   </project>

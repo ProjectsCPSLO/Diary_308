@@ -40,11 +40,14 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch('https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/user/profile', {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
+        const response = await fetch(
+          'https://diary-backend-d7dxfjbpe8g0cchj.westus3-01.azurewebsites.net/api/user/profile',
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
         const json = await response.json();
 
         if (response.ok) {

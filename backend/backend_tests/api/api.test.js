@@ -9,6 +9,9 @@
 
 // dotenv.config();
 
+
+// // eslint-disable-next-line no-undef
+
 // // Increase Jest's timeout to 20 seconds
 // jest.setTimeout(20000);
 
@@ -18,9 +21,13 @@
 
 //   beforeAll(async () => {
 //     // Connect to the database manually (since we're not using server.js)
-//     await mongoose.connect(process.env.MONGO_URI, {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
+
+//     await mongoose.connect(
+//       'mongodb+srv://MuskaS:ZZolUuWxkqYxZeYo@diary.ycycy.mongodb.net/',
+//       {
+//         //useNewUrlParser: true,
+//         //useUnifiedTopology: true,
+
 //     });
 
 //     // Start the server on an ephemeral port
@@ -80,7 +87,9 @@
 //       location: null, // Geotag disabled
 //       password: null,
 //     };
+
 // ]
+
 //     const postResponse = await request(server)
 
 //       .post('/api/posts')
@@ -119,13 +128,16 @@
 
 //   afterAll(async () => {
 //     // Close the HTTP server
+
+//     if (server) {
+
 //     await new Promise((resolve, reject) => {
 //       server.close((err) => {
 //         if (err) return reject(err);
 //         resolve();
 //       });
 //     });
-//     // Then close the Mongoose connection
-//     await mongoose.connection.close();
-//   });
+//   }
+//   await mongoose.connection.close();
+// });
 // });
